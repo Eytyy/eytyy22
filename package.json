@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cd studio && sanity build ../public/studio -y && cd.. && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -16,6 +16,7 @@
     "react-dom": "18.1.0"
   },
   "devDependencies": {
+    "@sanity/cli": "^2.30.0",
     "eslint": "8.16.0",
     "eslint-config-next": "12.1.6"
   }
