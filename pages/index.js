@@ -1,8 +1,8 @@
 import Head from 'next/head';
+import {PortableText} from '@portabletext/react';
 import {getClient} from './lib/sanity.server';
 
 export default function Home({data}) {
-  console.log(data);
   return (
     <div>
       <Head>
@@ -11,7 +11,36 @@ export default function Home({data}) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <header></header>
-      <main></main>
+      <main>
+        {data &&
+          data.map(({_id, date, tags, body}) => (
+            <div key={_id}>
+              <div sx={{mb: 6, variant: 'text.meta'}}>
+                {date && (
+                  <time sx={{}} dateTime={date}>
+                    {date}
+                  </time>
+                )}
+                {tags && (
+                  <span sx={{ml: 4}}>
+                    tags:{' '}
+                    {tags.map((tag) => (
+                      <span
+                        sx={{mr: 3, borderBottom: '1px solid'}}
+                        key={tag._id}
+                      >{`#${tag.title}`}</span>
+                    ))}
+                  </span>
+                )}
+              </div>
+              {body && (
+                <div sx={{variant: 'text.body', maxWidth: '80ch'}}>
+                  <PortableText value={body} />
+                </div>
+              )}
+            </div>
+          ))}
+      </main>
       <footer></footer>
     </div>
   );
