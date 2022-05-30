@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import {PortableText} from '@portabletext/react';
-import {getClient} from './lib/sanity.server';
+import {getClient} from '@lib/sanity.server';
 import Link from 'next/link';
 
 export default function Home({data}) {
