@@ -1,12 +1,26 @@
 export default {
-  name: 'quickPost',
-  title: 'Quick Post',
+  name: 'post',
+  title: 'Post',
   type: 'document',
   fields: [
+    {
+      name: 'finished',
+      type: 'boolean',
+      title: 'Finished',
+    },
     {
       name: 'title',
       title: 'Title',
       type: 'string',
+    },
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
     },
     {
       name: 'publishedAt',
@@ -22,7 +36,7 @@ export default {
     {
       name: 'body',
       title: 'Body',
-      type: 'blockContent',
+      type: 'customBlockContent',
     },
     {
       name: 'tags',
@@ -31,7 +45,6 @@ export default {
       of: [{type: 'reference', to: {type: 'category'}}],
     },
   ],
-
   preview: {
     select: {
       title: 'title',

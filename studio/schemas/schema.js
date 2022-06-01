@@ -8,8 +8,16 @@ import schemaTypes from 'all:part:@sanity/base/schema-type';
 import blockContent from './blockContent';
 import category from './category';
 import quickPost from './quick-post';
+import post from './post';
+import customBlockContent from './customBlockContent';
 
 export default createSchema({
   name: 'default',
-  types: schemaTypes.concat([quickPost, category, blockContent]),
+  types: schemaTypes.concat([
+    quickPost,
+    post,
+    category,
+    customBlockContent,
+    blockContent,
+  ]),
 });
