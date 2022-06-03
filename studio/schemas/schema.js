@@ -10,6 +10,8 @@ import category from './category';
 import quickPost from './quick-post';
 import post from './post';
 import customBlockContent from './customBlockContent';
+import progressTracker from './progress-tracker';
+import progressItem from './progress-item';
 
 export default createSchema({
   name: 'default',
@@ -19,5 +21,8 @@ export default createSchema({
     category,
     customBlockContent,
     blockContent,
+
+    progressTracker,
+    progressItem,
   ]),
 });

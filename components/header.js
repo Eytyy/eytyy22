@@ -1,6 +1,8 @@
 /** @jsxImportSource theme-ui */
 import Link from 'next/link';
-const Header = () => {
+import {MdOutlineHistoryToggleOff} from 'react-icons/md';
+
+const Header = ({toggleProgress}) => {
   return (
     <div sx={{position: 'sticky', width: '100%', top: '0', zIndex: 10}}>
       <div
@@ -24,6 +26,9 @@ const Header = () => {
             eytyy
           </a>
         </Link>
+        <div onClick={toggleProgress}>
+          <MdOutlineHistoryToggleOff />
+        </div>
       </div>
     </div>
   );
