@@ -5,12 +5,15 @@ import createSchema from 'part:@sanity/base/schema-creator';
 import schemaTypes from 'all:part:@sanity/base/schema-type';
 
 // We import object and document schemas
-import blockContent from './blockContent';
-import category from './category';
 import quickPost from './quick-post';
 import post from './post';
-import customBlockContent from './customBlockContent';
+import collection from './collection';
+import tag from './tag';
+import category from './category';
 import progressTracker from './progress-tracker';
+
+import blockContent from './blockContent';
+import customBlockContent from './customBlockContent';
 import progressItem from './progress-item';
 
 export default createSchema({
@@ -18,11 +21,13 @@ export default createSchema({
   types: schemaTypes.concat([
     quickPost,
     post,
+    collection,
+    tag,
     category,
-    customBlockContent,
-    blockContent,
-
     progressTracker,
+
+    blockContent,
+    customBlockContent,
     progressItem,
   ]),
 });
