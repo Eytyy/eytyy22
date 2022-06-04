@@ -3,15 +3,31 @@ import Head from 'next/head';
 import {useState} from 'react';
 
 import {PortableText} from '@portabletext/react';
+
 import {getClient} from '@lib/sanity.server';
-import Header from '@components/header';
 import myPortableTextComponents from '@lib/portablet-text-component';
-import Tracker from '@components/tracker';
 import {getFormatedDate} from '@lib/helpers';
+
+import Header from '@components/header';
+import Tracker from '@components/tracker';
+import CollectionPreview from '@components/collection-preview';
+import QuickPost from '@components/quick-post';
 
 export default function Home({data}) {
   const [showProgress, setShowProgress] = useState(true);
   const {posts, tracker} = data;
+
+  function renderContent({_type, _id, ...rest}) {
+    switch (_type) {
+      case 'collection':
+        return <CollectionPreview key={_id} {...rest} />;
+      case 'quickPost':
+        return <QuickPost key={_id} {...rest} />;
+      default:
+        return null;
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -26,64 +42,7 @@ export default function Home({data}) {
       />
       <div sx={{variant: 'fullGrid'}}>
         <main sx={{gridColumn: '2 / span 8'}}>
-          <div>
-            {posts &&
-              posts.map(({_id, publishedAt, tags, body, title, finished}) => (
-                <div sx={{mb: [9]}} key={_id}>
-                  <div sx={{mb: 6, variant: 'text.meta'}}>
-                    {typeof finished !== 'undefined' && !finished && (
-                      <div>
-                        <span
-                          sx={{
-                            background: 'red',
-                            color: '#fff',
-                            mb: 4,
-                            display: 'inline-block',
-                            padding: 2,
-                            fontFamily: 'heading',
-                            letterSpacing: 1,
-                          }}
-                        >
-                          {' '}
-                          {`Draft`}
-                        </span>
-                      </div>
-                    )}
-                    <h2
-                      sx={{
-                        variant: 'text.postTitle',
-                      }}
-                    >
-                      {title}
-                    </h2>
-                    {publishedAt && (
-                      <time sx={{}} dateTime={publishedAt}>
-                        {getFormatedDate(publishedAt)}
-                      </time>
-                    )}
-                    {tags && (
-                      <span sx={{ml: 4}}>
-                        tags:{' '}
-                        {tags.map((tag) => (
-                          <span
-                            sx={{mr: 3, borderBottom: '1px solid'}}
-                            key={tag._id}
-                          >{`#${tag.title}`}</span>
-                        ))}
-                      </span>
-                    )}
-                  </div>
-                  {body && (
-                    <div sx={{variant: 'text.body'}}>
-                      <PortableText
-                        value={body}
-                        components={myPortableTextComponents}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-          </div>
+          {posts && posts.map(renderContent)}
         </main>
         <aside sx={{gridColumn: 'auto / span 5'}}>
           {tracker && <Tracker visible={showProgress} {...tracker} />}
@@ -98,9 +57,15 @@ export default function Home({data}) {
 export async function getStaticProps() {
   const allPostsQuery = `
     {
-      "posts": *[_type in ["quickPost", 'post']] | order(publishedAt asc) {
+      "posts": *[_type in ["quickPost", 'collection']] | order(publishedAt asc) {
         ...,
-        tags[]->
+        _type == "quickPost" => {
+          tags[]->,
+        },
+        _type == "collection" => {
+          posts[]->,
+          category->
+        }
       },
       "tracker": *[_type == 'progressTracker'][0] {
         ...,
