@@ -42,7 +42,7 @@ export default {
       name: 'tags',
       title: 'Tags',
       type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
+      of: [{type: 'reference', to: {type: 'tag'}}],
     },
   ],
   preview: {
