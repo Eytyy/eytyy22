@@ -6,6 +6,8 @@ import {getClient} from '@lib/sanity.server';
 import Head from 'next/head';
 
 const Collection = ({data}) => {
+  if (!data) return null;
+
   const {title, description, posts, slug, tags: allTags} = data;
 
   // Reduce allTags to an object to remove duplicates
@@ -99,6 +101,9 @@ export async function getStaticProps({params}) {
     }
   }`;
   const data = await getClient().fetch(query, {collectionType, collectionSlug});
+
+  if (!data) return {notFound: true};
+
   return {
     props: {
       data,
