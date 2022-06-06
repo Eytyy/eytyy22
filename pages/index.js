@@ -2,11 +2,7 @@
 import Head from 'next/head';
 import {useState} from 'react';
 
-import {PortableText} from '@portabletext/react';
-
 import {getClient} from '@lib/sanity.server';
-import myPortableTextComponents from '@lib/portablet-text-component';
-import {getFormatedDate} from '@lib/helpers';
 
 import Header from '@components/header';
 import Tracker from '@components/tracker';
@@ -44,9 +40,9 @@ export default function Home({data}) {
         <main sx={{gridColumn: '2 / span 8'}}>
           {posts && posts.map(renderContent)}
         </main>
-        <aside sx={{gridColumn: 'auto / span 5'}}>
+        {/* <aside sx={{gridColumn: 'auto / span 5'}}>
           {tracker && <Tracker visible={showProgress} {...tracker} />}
-        </aside>
+        </aside> */}
       </div>
 
       <footer></footer>
@@ -64,7 +60,7 @@ export async function getStaticProps() {
         },
         _type == "collection" => {
           posts[]->,
-          category->
+          type->
         }
       },
       "tracker": *[_type == 'progressTracker'][0] {

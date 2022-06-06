@@ -2,25 +2,16 @@
 
 import myPortableTextComponents from '@lib/portablet-text-component';
 import {PortableText} from '@portabletext/react';
+import Link from 'next/link';
 
-const CollectionPreview = ({category, description, title, posts, ...rest}) => {
-  console.log(posts);
+const CollectionPreview = ({type, description, title, slug, posts}) => {
   return (
     <div sx={{mb: [9]}}>
-      {category && (
-        <span
-          sx={{
-            p: 1,
-            mb: 1,
-            display: 'inline-block',
-            variant: 'text.meta',
-            border: '1px solid black',
-          }}
-        >
-          {category.title}
-        </span>
-      )}
-      <h2 sx={{variant: 'text.postTitle'}}>{title}</h2>
+      <h2 sx={{variant: 'text.postTitle'}}>
+        <Link href={`/${type.slug.current}/${slug.current}`}>
+          <a>{title}</a>
+        </Link>
+      </h2>
       {description && (
         <div sx={{variant: 'text.body'}}>
           <PortableText
@@ -29,12 +20,23 @@ const CollectionPreview = ({category, description, title, posts, ...rest}) => {
           />
         </div>
       )}
-      {posts &&
-        posts.map((post) => (
-          <div key={post._key}>
-            <h3>{post.title}</h3>
-          </div>
-        ))}
+      {posts && (
+        <ol sx={{listStylePosition: 'outside', p: 0}}>
+          {posts.map((post) => (
+            <li
+              sx={{variant: 'text.subHeadline', fontFamily: 'heading', mb: 2}}
+              key={post._id}
+            >
+              <Link
+                passHref
+                href={`/${type.slug.current}/${slug.current}/#${post.slug.current}`}
+              >
+                <a>{post.title}</a>
+              </Link>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 };
