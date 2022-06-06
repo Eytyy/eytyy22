@@ -9,10 +9,10 @@ export default {
       type: 'string',
     },
     {
-      name: 'category',
-      title: 'Category',
+      name: 'type',
+      title: 'Type',
       type: 'reference',
-      to: [{type: 'category'}],
+      to: [{type: 'collectionType'}],
     },
     {
       name: 'description',
