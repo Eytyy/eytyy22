@@ -26,9 +26,9 @@ const Header = ({toggleProgress}) => {
             eytyy
           </a>
         </Link>
-        <div onClick={toggleProgress}>
+        {/* <div onClick={toggleProgress}>
           <MdOutlineHistoryToggleOff />
-        </div>
+        </div> */}
       </div>
     </div>
   );
