@@ -6,7 +6,7 @@ import {getClient} from '@lib/sanity.server';
 import Head from 'next/head';
 
 const Collection = ({data}) => {
-  const {title, description, posts, slug, tags: allTags} = data[0];
+  const {title, description, posts, slug, tags: allTags} = data;
 
   // Reduce allTags to an object to remove duplicates
   const tags = allTags.reduce((prev, current) => {
@@ -28,7 +28,7 @@ const Collection = ({data}) => {
         }}
       />
       <div sx={{variant: 'fullGrid'}}>
-        <div sx={{gridColumn: '2/span 8'}}>
+        <div sx={{variant: 'fullGrid.contentCol'}}>
           <div sx={{mb: 6}}>
             <h1 sx={{variant: 'text.pageTitle'}}>{title}</h1>
             {tags && (
@@ -46,7 +46,7 @@ const Collection = ({data}) => {
               ))}
           </div>
         </div>
-        <aside sx={{gridColumn: '11 / 14'}}>
+        <aside sx={{gridColumn: ['4 / 7', null, '11 / 14']}}>
           <div sx={{position: 'sticky', top: '85px'}}>
             {posts &&
               posts.map((post, index) => (
@@ -85,7 +85,7 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps({params}) {
   const {collectionType, collectionSlug} = params;
-  const query = `*[_type == "collection" && slug.current == $collectionSlug && type->.slug.current == $collectionType]{
+  const query = `*[_type == "collection" && slug.current == $collectionSlug && type->.slug.current == $collectionType][0]{
     ..., 
     posts[] -> {
       ...,

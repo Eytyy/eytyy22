@@ -37,7 +37,7 @@ export default function Home({data}) {
         }}
       />
       <div sx={{variant: 'fullGrid'}}>
-        <main sx={{gridColumn: '2 / span 8'}}>
+        <main sx={{variant: 'fullGrid.contentCol'}}>
           {posts && posts.map(renderContent)}
         </main>
         {/* <aside sx={{gridColumn: 'auto / span 5'}}>
