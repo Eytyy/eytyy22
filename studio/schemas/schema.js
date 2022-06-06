@@ -9,7 +9,7 @@ import quickPost from './quick-post';
 import post from './post';
 import collection from './collection';
 import tag from './tag';
-import category from './category';
+import collectionType from './collectionType';
 import progressTracker from './progress-tracker';
 
 import blockContent from './blockContent';
@@ -23,7 +23,7 @@ export default createSchema({
     post,
     collection,
     tag,
-    category,
+    collectionType,
     progressTracker,
 
     blockContent,
