@@ -2,20 +2,16 @@
 
 import Header from '@components/header';
 import Post from '@components/post';
+import {getChildPostsUniqueTags} from '@lib/helpers';
 import {getClient} from '@lib/sanity.server';
 import Head from 'next/head';
 
 const Collection = ({data}) => {
   if (!data) return null;
 
-  const {title, description, posts, slug, tags: allTags} = data;
+  const {title, description, posts, slug, allPostsTags} = data;
 
-  // Reduce allTags to an object to remove duplicates
-  const tags = allTags.reduce((prev, current) => {
-    return prev.slug === current.slug
-      ? prev
-      : {...prev, [current.slug]: {...current}};
-  }, {});
+  const tags = getChildPostsUniqueTags(allPostsTags);
 
   return (
     <>
@@ -31,7 +27,7 @@ const Collection = ({data}) => {
             <h1 sx={{variant: 'text.pageTitle'}}>{title}</h1>
             {tags && (
               <div sx={{variant: 'text.meta', display: 'flex', gap: 4}}>
-                {Object.values(tags).map((tag) => (
+                {tags.map((tag) => (
                   <span key={tag._id}>#{tag.slug}</span>
                 ))}
               </div>
@@ -90,7 +86,7 @@ export async function getStaticProps({params}) {
       "slug": slug.current,
       tags[] ->
     },
-    "tags": posts[]->.tags[]-> {
+    "allPostsTags": posts[]->.tags[]-> {
       "slug": slug.current, 
       title, 
       _id

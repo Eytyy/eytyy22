@@ -7,8 +7,8 @@ import {PortableText} from '@portabletext/react';
 
 const QuickPost = ({publishedAt, tags, body, title, finished}) => {
   return (
-    <div sx={{mb: [9]}}>
-      <div sx={{mb: 6, variant: 'text.meta'}}>
+    <article className='quick-post' sx={{mb: [9]}}>
+      <header sx={{mb: 4}}>
         {typeof finished !== 'undefined' && !finished && (
           <div>
             <span
@@ -27,15 +27,9 @@ const QuickPost = ({publishedAt, tags, body, title, finished}) => {
             </span>
           </div>
         )}
-        <h2
-          sx={{
-            variant: 'text.postTitle',
-          }}
-        >
-          {title}
-        </h2>
+        <h2 sx={{variant: 'text.postTitle'}}>{title}</h2>
         {publishedAt && (
-          <time sx={{}} dateTime={publishedAt}>
+          <time sx={{variant: 'text.meta'}} dateTime={publishedAt}>
             {getFormatedDate(publishedAt)}
           </time>
         )}
@@ -50,13 +44,13 @@ const QuickPost = ({publishedAt, tags, body, title, finished}) => {
             ))}
           </span>
         )}
-      </div>
+      </header>
       {body && (
         <div sx={{variant: 'text.body'}}>
           <PortableText value={body} components={myPortableTextComponents} />
         </div>
       )}
-    </div>
+    </article>
   );
 };
 

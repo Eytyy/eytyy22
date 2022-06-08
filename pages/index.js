@@ -60,7 +60,12 @@ export async function getStaticProps() {
         },
         _type == "collection" => {
           posts[]->,
-          type->
+          type->,
+          "allPostsTags": posts[]->.tags[]-> {
+            "slug": slug.current, 
+            title, 
+            _id
+          }
         }
       },
       "tracker": *[_type == 'progressTracker'][0] {
