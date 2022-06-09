@@ -4,9 +4,17 @@ export default {
   type: 'document',
   fields: [
     {
-      name: 'finished',
-      type: 'boolean',
-      title: 'Finished',
+      name: 'status',
+      type: 'string',
+      title: 'Status',
+      options: {
+        list: [
+          { title: 'Not Started', value: 'not-started' },
+          { title: 'In Progress', value: 'in-progress' },
+          { title: 'Finished', value: 'finished' },
+        ],
+      },
+      initialValue: 'not-started',
     },
     {
       name: 'title',
@@ -42,7 +50,7 @@ export default {
       name: 'tags',
       title: 'Tags',
       type: 'array',
-      of: [{type: 'reference', to: {type: 'tag'}}],
+      of: [{ type: 'reference', to: { type: 'tag' } }],
     },
   ],
   preview: {
@@ -51,7 +59,7 @@ export default {
       publishedAt: 'publishedAt',
     },
     prepare(selection) {
-      const {publishedAt} = selection;
+      const { publishedAt } = selection;
       return Object.assign({}, selection, {
         subtitle: publishedAt && `published at: ${publishedAt}`,
       });

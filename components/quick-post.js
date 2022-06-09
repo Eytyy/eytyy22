@@ -1,53 +1,30 @@
 /** @jsxImportSource theme-ui */
 
+import { PortableText } from '@portabletext/react';
+
 import myPortableTextComponents from '@lib/portablet-text-component';
-import {getFormatedDate} from '@lib/helpers';
 
-import {PortableText} from '@portabletext/react';
+import MetaDates from './meta-dates';
+import MetaTags from './meta-tags';
 
-const QuickPost = ({publishedAt, tags, body, title, finished}) => {
+const QuickPost = ({ publishedAt, tags, body, title, finished }) => {
   return (
-    <article className='quick-post' sx={{mb: [9]}}>
-      <header sx={{mb: 4}}>
-        {typeof finished !== 'undefined' && !finished && (
-          <div>
-            <span
-              sx={{
-                background: 'red',
-                color: '#fff',
-                mb: 4,
-                display: 'inline-block',
-                padding: 2,
-                fontFamily: 'heading',
-                letterSpacing: 1,
-              }}
-            >
-              {' '}
-              {`Draft`}
-            </span>
-          </div>
-        )}
-        <h2 sx={{variant: 'text.postTitle'}}>{title}</h2>
-        {publishedAt && (
-          <time sx={{variant: 'text.meta'}} dateTime={publishedAt}>
-            {getFormatedDate(publishedAt)}
-          </time>
-        )}
-        {tags && (
-          <span sx={{ml: 4}}>
-            tags:{' '}
-            {tags.map((tag) => (
-              <span
-                sx={{mr: 3, borderBottom: '1px solid'}}
-                key={tag._id}
-              >{`#${tag.title}`}</span>
-            ))}
-          </span>
-        )}
+    <article className="quick-post" sx={{ mb: [9] }}>
+      <header sx={{ mb: 6 }}>
+        <h2 sx={{ variant: 'text.postTitle' }}>{title}</h2>
+        <div sx={{ variant: 'meta', mt: 2 }}>
+          {publishedAt && (
+            <MetaDates prefix="posted on" date={publishedAt} />
+          )}
+          {tags && <MetaTags tags={tags} />}
+        </div>
       </header>
       {body && (
-        <div sx={{variant: 'text.body'}}>
-          <PortableText value={body} components={myPortableTextComponents} />
+        <div sx={{ variant: 'text.body' }}>
+          <PortableText
+            value={body}
+            components={myPortableTextComponents}
+          />
         </div>
       )}
     </article>

@@ -1,73 +1,46 @@
 /** @jsxImportSource theme-ui */
 
-import {getChildPostsUniqueTags, getFormatedDate} from '@lib/helpers';
-import myPortableTextComponents from '@lib/portablet-text-component';
-import {PortableText} from '@portabletext/react';
+import { getChildPostsUniqueTags } from '@lib/helpers';
 import Link from 'next/link';
+import CollectionPostsList from './collection-posts-list';
+import MetaDates from './meta-dates';
+import MetaTags from './meta-tags';
 
 const CollectionPreview = ({
   type,
-  description,
   title,
   slug,
   posts,
   _createdAt,
+  _lastUpdatedAt,
   allPostsTags,
 }) => {
   const tags = getChildPostsUniqueTags(allPostsTags);
 
   return (
-    <article sx={{mb: [9]}}>
-      <header sx={{mb: 4}}>
-        {_createdAt && (
-          <time sx={{variant: 'text.meta'}} dateTime={_createdAt}>
-            {getFormatedDate(_createdAt)}
-          </time>
-        )}
-        <h2 sx={{variant: 'text.postTitle'}}>
-          <Link href={`/${type.slug.current}/${slug.current}`}>
-            <a>
+    <article sx={{ mb: [9] }}>
+      <header sx={{ mb: 6 }}>
+        <div sx={{ variant: 'meta' }}></div>
+        <h2 sx={{ variant: 'text.postTitle' }}>
+          <Link href={`/${type.slug}/${slug}`} passHref>
+            <a sx={{ variant: 'link' }}>
               {type && type.title}: {title}
             </a>
           </Link>
         </h2>
-        {tags && (
-          <div sx={{variant: 'text.meta', display: 'flex', gap: 4}}>
-            {tags.map((tag) => (
-              <span key={tag._id}>#{tag.slug}</span>
-            ))}
-          </div>
-        )}
-      </header>
-
-      {description && (
-        <div sx={{variant: 'text.body'}}>
-          <PortableText
-            value={description}
-            components={myPortableTextComponents}
-          />
+        <div sx={{ variant: 'meta', mt: 2 }}>
+          {_createdAt && (
+            <MetaDates prefix="posted on" date={_createdAt} />
+          )}
+          {_lastUpdatedAt && (
+            <MetaDates prefix="updated on" date={_lastUpdatedAt} />
+          )}
+          <MetaTags tags={tags} />
         </div>
-      )}
+      </header>
       {posts && (
-        <div sx={{}}>
-          {posts.map((post, index) => (
-            <span
-              sx={{variant: 'text.subHeadline', fontFamily: 'heading', mb: 2}}
-              key={post._id}
-            >
-              <Link
-                passHref
-                href={`/${type.slug.current}/${slug.current}/#${post.slug.current}`}
-              >
-                <a>{post.title}</a>
-              </Link>
-              {index === posts.length - 1 ? (
-                <span>.</span>
-              ) : (
-                <span sx={{mr: '1ch'}}>,</span>
-              )}
-            </span>
-          ))}
+        <div sx={{ fontSize: 3, fontFamily: 'heading' }}>
+          <CollectionPostsList posts={posts} />
         </div>
       )}
     </article>

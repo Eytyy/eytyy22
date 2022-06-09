@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
-import {getClient} from '@lib/sanity.server';
+import { getClient } from '@lib/sanity.server';
 import Link from 'next/link';
 
-const CollectionsLanding = ({data, collectionType}) => {
+const CollectionsLanding = ({ data, collectionType }) => {
   return (
-    <div sx={{variant: 'wrapper.fixed'}}>
+    <div sx={{ variant: 'wrapper.fixed' }}>
       {data && (
         <ol>
           {data.map((post) => (
@@ -27,15 +27,17 @@ export async function getStaticPaths() {
     `*[ _type == "collection" && defined(type->.slug)][].type->.slug.current`
   );
   return {
-    paths: paths.map((collectionType) => ({params: {collectionType}})),
+    paths: paths.map((collectionType) => ({
+      params: { collectionType },
+    })),
     fallback: true,
   };
 }
 
-export async function getStaticProps({params}) {
+export async function getStaticProps({ params }) {
   const data = await getClient().fetch(
     `*[_type == "collection" && type->.slug.current == $collectionType]`,
-    {collectionType: params.collectionType}
+    { collectionType: params.collectionType }
   );
   return {
     props: {
