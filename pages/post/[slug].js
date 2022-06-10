@@ -1,13 +1,16 @@
 /** @jsxImportSource theme-ui */
+
+import Head from 'next/head';
+import Link from 'next/link';
+import { PortableText } from '@portabletext/react';
+
+import { getClient } from '@lib/sanity.server';
+import myPortableTextComponents from '@lib/portablet-text-component';
+
 import CollectionPostsList from '@components/collection-posts-list';
 import Header from '@components/header';
 import MetaDates from '@components/meta-dates';
 import MetaTags from '@components/meta-tags';
-import myPortableTextComponents from '@lib/portablet-text-component';
-import { getClient } from '@lib/sanity.server';
-import { PortableText } from '@portabletext/react';
-import Head from 'next/head';
-import Link from 'next/link';
 
 const Post = ({ data }) => {
   if (!data) return null;
@@ -22,6 +25,8 @@ const Post = ({ data }) => {
   } = data;
 
   function getCollectionInfo(collection, postID) {
+    if (collection?.allPosts && collection.allPosts < 1) return {};
+
     const { allPosts, ...rest } = collection;
     const currentPostIndex = allPosts.findIndex(
       (post) => post._id === postID
@@ -34,27 +39,18 @@ const Post = ({ data }) => {
 
     return {
       ...rest,
-      currentPostIndex,
       isFirstPost,
       isLastPost,
       otherPosts,
       allPosts,
+      currentPostIndex: currentPostIndex + 1,
+      nextPostIndex: nextPostIndex + 1,
       nextPost: collection.allPosts[nextPostIndex],
     };
   }
 
-  const partOfCollection = typeof referencedIn !== 'undefined';
-
-  const {
-    currentPostIndex,
-    isFirstPost,
-    isLastPost,
-    otherPosts,
-    allPosts,
-    nextPost,
-    title: collectionTitle,
-    slug: collectionSlug,
-  } = partOfCollection ? getCollectionInfo(referencedIn, _id) : null;
+  const collectionInfo =
+    (referencedIn && getCollectionInfo(referencedIn, _id)) || null;
 
   return (
     <>
@@ -71,7 +67,6 @@ const Post = ({ data }) => {
         <div sx={{ variant: 'fullGrid.contentCol' }}>
           <header sx={{ variant: 'page.header', mb: 6 }}>
             <h1 sx={{ mb: 4, variant: 'text.pageTitle' }}>{title}</h1>
-
             <div sx={{ variant: 'meta' }}>
               {_createdAt && (
                 <MetaDates prefix="published on" date={_createdAt} />
@@ -82,22 +77,36 @@ const Post = ({ data }) => {
               {tags && <MetaTags tags={tags} />}
             </div>
           </header>
-          {!isFirstPost && (
+          {collectionInfo && !collectionInfo.isFirstPost && (
             <div
               sx={{
                 variant: 'contextual.small',
+                padding: '30px',
+                boxShadow: '0px 3px 5px -1px #ddd',
               }}
             >
               <p>
-                This is part {currentPostIndex + 1} {' of '}
-                <Link href={`/guide/${collectionSlug}`} passHref>
-                  <a sx={{ variant: 'link' }}>{collectionTitle}</a>
+                This is part {collectionInfo.currentPostIndex}{' '}
+                {' of '}
+                <Link
+                  href={`/guide/${collectionInfo.collectionSlug}`}
+                  passHref
+                >
+                  <a sx={{ variant: 'link' }}>
+                    {collectionInfo.title}
+                  </a>
                 </Link>{' '}
                 Guide.
                 <br />
                 Previous{' '}
-                {otherPosts.length > 1 ? 'posts: ' : 'post: '}
-                {<CollectionPostsList posts={otherPosts.reverse()} />}
+                {collectionInfo?.otherPosts.length > 1
+                  ? 'posts: '
+                  : 'post: '}
+                {
+                  <CollectionPostsList
+                    posts={collectionInfo.otherPosts.reverse()}
+                  />
+                }
               </p>
             </div>
           )}
@@ -107,16 +116,44 @@ const Post = ({ data }) => {
               components={myPortableTextComponents}
             />
           </div>
-          {!isLastPost && nextPost && (
-            <aside sx={{ variant: 'contextual.big' }}>
-              <p>
-                Read next{': '}
-                <Link href={`/post/${nextPost.slug}`} passHref>
-                  <a sx={{ variant: 'link' }}>{nextPost.title}</a>
-                </Link>
-              </p>
-            </aside>
-          )}
+          <aside sx={{ variant: 'contextual.big' }}>
+            {collectionInfo &&
+              !collectionInfo.isLastPost &&
+              collectionInfo.nextPost && (
+                <>
+                  <p>
+                    {`part ${collectionInfo.nextPostIndex}: `}
+                    <Link
+                      href={`/post/${collectionInfo.nextPost.slug}`}
+                      passHref
+                    >
+                      <a sx={{ variant: 'link' }}>
+                        {`${collectionInfo.nextPost.title}.`}
+                      </a>
+                    </Link>
+                  </p>
+                  {tags && (
+                    <>
+                      {'posts in: '}
+                      {tags.map((tag, index) => (
+                        <span key={tag._id}>
+                          <Link href={`/tags/${tag.slug}`} passHref>
+                            <a sx={{ variant: 'link' }}>
+                              #{tag.title}
+                            </a>
+                          </Link>
+                          {index === tags.length - 1 ? (
+                            <span>.</span>
+                          ) : (
+                            <span sx={{ mr: '1ch' }}>,</span>
+                          )}
+                        </span>
+                      ))}
+                    </>
+                  )}
+                </>
+              )}
+          </aside>
         </div>
       </article>
     </>
