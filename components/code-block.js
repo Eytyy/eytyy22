@@ -13,7 +13,8 @@ const CodeBlock = ({ value, language, markers, filename }) => {
     <div
       className="code-wrapper"
       sx={{
-        my: 4,
+        mt: 4,
+        mb: 5,
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
@@ -21,7 +22,7 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           width: '100%',
         },
         'pre[class*="language-"], code[class*="language-"]': {
-          color: '#d4d4d4',
+          color: '#000',
           fontSize: '13px',
           textShadow: 'none',
           fontFamily:
@@ -51,10 +52,10 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           },
         },
         'pre[class*="language-"]': {
-          padding: '1em',
-          margin: '.5em 0',
+          padding: [4, 6],
           overflow: 'auto',
-          background: '#2e2e2e',
+          background: '#FFF',
+          boxShadow: '0px 3px 5px -1px #ddd',
         },
         ':not(pre) > code[class*="language-"]': {
           padding: '.1em .3em',
@@ -67,13 +68,13 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           opacity: '.7',
         },
         '.token.doctype .token.doctype-tag': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
         '.token.doctype .token.name': {
           color: '#b857ff',
         },
         '.token.comment, .token.prolog': {
-          color: '#00ff9d',
+          color: '#888',
         },
         '.token.punctuation, .language-html .language-css .token.punctuation, .language-html .language-javascript .token.punctuation':
           {
@@ -86,19 +87,19 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           },
         '.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.deleted':
           {
-            color: '#ff8d26',
+            color: 'accent',
           },
         '.language-css .token.string.url': {
           textDecoration: 'underline',
         },
         '.token.operator, .token.entity': {
-          color: '#d4d4d4',
+          color: '#000',
         },
         '.token.operator.arrow': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
         '.token.atrule': {
-          color: '#ff8d26',
+          color: 'accent',
         },
         '.token.atrule .token.rule': {
           color: '#c586c0',
@@ -107,26 +108,26 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           color: '#b857ff',
         },
         '.token.atrule .token.url .token.function': {
-          color: '#fff000',
+          color: '#000',
         },
         '.token.atrule .token.url .token.punctuation': {
           color: '#d4d4d4',
         },
         '.token.keyword': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
 
         '.token.keyword.module, .token.keyword.control-flow': {
           color: '#c586c0',
         },
         '.token.function, .token.function .token.maybe-class-name': {
-          color: '#fff000',
+          color: '#000',
         },
         '.token.regex': {
           color: '#d16969',
         },
         '.token.important': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
         '.token.italic': {
           fontStyle: 'italic',
@@ -148,11 +149,11 @@ const CodeBlock = ({ value, language, markers, filename }) => {
         },
 
         '.token.punctuation.interpolation-punctuation': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
 
         '.token.boolean': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
 
         '.token.property, .token.variable, .token.imports .token.maybe-class-name, .token.exports .token.maybe-class-name':
@@ -166,7 +167,7 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           color: '#d7ba7d',
         },
         '.token.tag': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
         '.token.tag .token.punctuation': {
           color: '#808080',
@@ -178,13 +179,13 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           color: '#b857ff',
         },
         '.token.attr-value, .token.attr-value .token.punctuation': {
-          color: '#ff8d26',
+          color: 'accent',
         },
         '.token.attr-value .token.punctuation.attr-equals': {
           color: '#d4d4d4',
         },
         '.token.entity': {
-          color: '#00ddff',
+          color: '#00b8ff',
         },
         '.token.namespace': {
           color: '#4ec9b0',
@@ -195,7 +196,7 @@ const CodeBlock = ({ value, language, markers, filename }) => {
             color: '#b857ff',
           },
         'pre[class*="language-css"], code[class*="language-css"]': {
-          color: '#ff8d26',
+          color: 'accent',
         },
 
         'pre[class*="language-html"], code[class*="language-html"]': {
@@ -213,7 +214,7 @@ const CodeBlock = ({ value, language, markers, filename }) => {
           zIndex: '1',
         },
         '.refractor-marker': {
-          background: '#000',
+          background: '#eee',
           zIndex: '0',
           position: 'relative',
         },
@@ -225,7 +226,12 @@ const CodeBlock = ({ value, language, markers, filename }) => {
         markers={markers}
       />
       {filename && (
-        <span className="caption" sx={{ fontSize: 0 }}>
+        <span
+          className="caption"
+          sx={{
+            fontSize: 0,
+          }}
+        >
           {filename}
         </span>
       )}
