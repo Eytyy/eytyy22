@@ -51,7 +51,7 @@ const Post = ({ data }) => {
 
   const collectionInfo =
     (referencedIn && getCollectionInfo(referencedIn, _id)) || null;
-
+  console.log(collectionInfo);
   return (
     <>
       <Head>
@@ -88,10 +88,7 @@ const Post = ({ data }) => {
               <p>
                 This is part {collectionInfo.currentPostIndex}{' '}
                 {' of '}
-                <Link
-                  href={`/guide/${collectionInfo.collectionSlug}`}
-                  passHref
-                >
+                <Link href={`/guide/${collectionInfo.slug}`} passHref>
                   <a sx={{ variant: 'link' }}>
                     {collectionInfo.title}
                   </a>
@@ -121,7 +118,7 @@ const Post = ({ data }) => {
               !collectionInfo.isLastPost &&
               collectionInfo.nextPost && (
                 <>
-                  <p>
+                  <div>
                     {`part ${collectionInfo.nextPostIndex}: `}
                     <Link
                       href={`/post/${collectionInfo.nextPost.slug}`}
@@ -131,12 +128,15 @@ const Post = ({ data }) => {
                         {`${collectionInfo.nextPost.title}.`}
                       </a>
                     </Link>
-                  </p>
+                  </div>
                   {tags && (
-                    <>
+                    <div>
                       {'posts in: '}
                       {tags.map((tag, index) => (
-                        <span key={tag._id}>
+                        <span
+                          sx={{ display: 'inline-block' }}
+                          key={tag._id}
+                        >
                           <Link href={`/tags/${tag.slug}`} passHref>
                             <a sx={{ variant: 'link' }}>
                               #{tag.title}
@@ -149,7 +149,7 @@ const Post = ({ data }) => {
                           )}
                         </span>
                       ))}
-                    </>
+                    </div>
                   )}
                 </>
               )}

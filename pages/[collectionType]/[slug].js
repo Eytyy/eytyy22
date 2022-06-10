@@ -34,29 +34,54 @@ const Collection = ({ data }) => {
       </Head>
       <Header />
       <div sx={{ variant: 'fullGrid' }}>
-        <div sx={{ variant: 'fullGrid.contentCol' }}>
-          <header sx={{ variant: 'page.header', mb: 6 }}>
-            <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
-            <div sx={{ variant: 'meta' }}>
-              {_createdAt && (
-                <MetaDates prefix="published on" date={_createdAt} />
-              )}
-              {tags && <MetaTags tags={tags} />}
-            </div>
-          </header>
-          {description && (
-            <div sx={{ variant: 'text.body' }}>
-              <PortableText
-                value={description}
-                components={myPortableTextComponents}
-              />
-            </div>
-          )}
-          {posts && (
-            <div sx={{ variant: 'contextual.big', mt: 4 }}>
-              <CollectionPostsList posts={posts} />
-            </div>
-          )}
+        <div
+          sx={{
+            variant: 'fullGrid.fullWidthNoBleedCol',
+            display: ['block', null, 'grid'],
+            gridTemplateColumns: [
+              'repeat(6,1fr)',
+              null,
+              'repeat(12,1fr)',
+            ],
+            columnGap: [3, 5, 5],
+          }}
+        >
+          <div sx={{ gridColumn: '1/7' }}>
+            <header sx={{ variant: 'page.header', mb: 6 }}>
+              <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
+              <div sx={{ variant: 'meta' }}>
+                {_createdAt && (
+                  <MetaDates
+                    prefix="published on"
+                    date={_createdAt}
+                  />
+                )}
+                {tags && <MetaTags tags={tags} />}
+              </div>
+            </header>
+            {description && (
+              <div sx={{ variant: 'text.body' }}>
+                <PortableText
+                  value={description}
+                  components={myPortableTextComponents}
+                />
+              </div>
+            )}
+          </div>
+          <div sx={{ gridColumn: '7/-1' }}>
+            {posts && (
+              <div
+                sx={{
+                  fontFamily: 'heading',
+                  fontSize: [4],
+                  textTransform: 'lowercase',
+                  pl: [0, 0, 4],
+                }}
+              >
+                <CollectionPostsList posts={posts} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

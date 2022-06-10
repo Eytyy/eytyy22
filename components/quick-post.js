@@ -7,15 +7,15 @@ import myPortableTextComponents from '@lib/portablet-text-component';
 import MetaDates from './meta-dates';
 import MetaTags from './meta-tags';
 
-const QuickPost = ({ publishedAt, tags, body, title, finished }) => {
+const QuickPost = ({ _createdAt, tags, body, title }) => {
   return (
     <article className="quick-post" sx={{ mb: [9] }}>
       <header sx={{ mb: 6 }}>
+        <div sx={{ variant: 'meta', mb: 4 }}>
+          {_createdAt && <MetaDates prefix="" date={_createdAt} />}
+        </div>
         <h2 sx={{ variant: 'text.previewTitle' }}>{title}</h2>
-        <div sx={{ variant: 'meta', mt: 2 }}>
-          {publishedAt && (
-            <MetaDates prefix="posted on" date={publishedAt} />
-          )}
+        <div sx={{ variant: 'meta', mt: 4 }}>
           {tags && <MetaTags tags={tags} />}
         </div>
       </header>

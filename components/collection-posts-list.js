@@ -6,7 +6,9 @@ const CollectionPostsList = ({ posts }) => {
   return posts.map((post, index) => (
     <span key={post._id}>
       <Link href={`/post/${post.slug}`} passHref>
-        <a sx={{ variant: 'link' }}>{post.title}</a>
+        <a sx={{ variant: 'link' }}>
+          {`#${index + 1} ${post.title}`}
+        </a>
       </Link>
       {index === posts.length - 1 ? (
         <span>.</span>

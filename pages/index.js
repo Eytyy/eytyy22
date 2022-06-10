@@ -18,6 +18,7 @@ export default function Home({ data }) {
       post._type !== 'post'
     );
   });
+
   function renderContent({ _type, _id, ...rest }) {
     switch (_type) {
       case 'collection':
@@ -77,7 +78,11 @@ export async function getStaticProps() {
         // flag posts that are already referenced in a collection so we can filter them out
         // on the front-end
         _type == 'post' => {
-          "referenced": count(*[_type == "collection" && references(^._id)]) > 0
+          "referenced": count(*[_type == "collection" && references(^._id)]) > 0,
+           tags[]-> {
+            ...,
+            "slug": slug.current
+          },
         },
         _type == 'collection' => {
           type-> {
