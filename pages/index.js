@@ -6,17 +6,26 @@ import { getClient } from '@lib/sanity.server';
 import Header from '@components/header';
 import CollectionPreview from '@components/collection-preview';
 import QuickPost from '@components/quick-post';
+import PostPreview from '@components/post-preview';
 
 export default function Home({ data }) {
   const { posts } = data;
-  console.log(posts);
 
+  // filter out posts that are already referenced somewhere else
+  const unReferencedPosts = posts.filter((post) => {
+    return (
+      (post._type === 'post' && !post.referenced) ||
+      post._type !== 'post'
+    );
+  });
   function renderContent({ _type, _id, ...rest }) {
     switch (_type) {
       case 'collection':
         return <CollectionPreview key={_id} {...rest} />;
       case 'quickPost':
         return <QuickPost key={_id} {...rest} />;
+      case 'post':
+        return <PostPreview key={_id} {...rest} />;
       default:
         return null;
     }
@@ -39,9 +48,14 @@ export default function Home({ data }) {
       />
       <div sx={{ variant: 'fullGrid' }}>
         <main sx={{ variant: 'fullGrid.contentCol' }}>
-          {posts && posts.map(renderContent)}
+          {unReferencedPosts && unReferencedPosts.map(renderContent)}
         </main>
+        {/* <aside sx={{gridColumn: 'auto / span 5'}}>
+          {tracker && <Tracker visible={showProgress} {...tracker} />}
+        </aside> */}
       </div>
+
+      <footer></footer>
     </div>
   );
 }
@@ -49,21 +63,28 @@ export default function Home({ data }) {
 export async function getStaticProps() {
   const allPostsQuery = `
     {
-      "posts": *[_type in ["quickPost", 'collection']] | order(publishedAt asc) {
+      "posts": *[_type in ["post", "collection", "quickPost"]] | order(_createdAt asc) {
         ...,
-        "slug": slug.current,
+        _type == 'post' || _type == 'collection' => {
+          "slug": slug.current,
+        },
         _type == "quickPost" => {
           tags[]-> {
             ...,
             "slug": slug.current
           },
         },
-        _type == "collection" => {
+        // flag posts that are already referenced in a collection so we can filter them out
+        // on the front-end
+        _type == 'post' => {
+          "referenced": count(*[_type == "collection" && references(^._id)]) > 0
+        },
+        _type == 'collection' => {
           type-> {
             ...,
             "slug": slug.current
           },
-          posts[]-> {
+            posts[]-> {
             ...,
             "slug": slug.current
           },
@@ -73,11 +94,7 @@ export async function getStaticProps() {
             "slug": slug.current,
           },
           "_lastUpdatedAt": posts[]-> | order(_updatedAt desc)[0]._updatedAt
-        }
-      },
-      "tracker": *[_type == 'progressTracker'][0] {
-        ...,
-        items
+        },
       }
     }
   `;
