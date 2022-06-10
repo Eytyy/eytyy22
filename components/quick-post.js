@@ -11,7 +11,7 @@ const QuickPost = ({ publishedAt, tags, body, title, finished }) => {
   return (
     <article className="quick-post" sx={{ mb: [9] }}>
       <header sx={{ mb: 6 }}>
-        <h2 sx={{ variant: 'text.postTitle' }}>{title}</h2>
+        <h2 sx={{ variant: 'text.previewTitle' }}>{title}</h2>
         <div sx={{ variant: 'meta', mt: 2 }}>
           {publishedAt && (
             <MetaDates prefix="posted on" date={publishedAt} />
