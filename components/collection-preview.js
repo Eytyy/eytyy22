@@ -21,7 +21,7 @@ const CollectionPreview = ({
     <article sx={{ mb: [9] }}>
       <header sx={{ mb: 6 }}>
         <div sx={{ variant: 'meta' }}></div>
-        <h2 sx={{ variant: 'text.postTitle' }}>
+        <h2 sx={{ variant: 'text.previewTitle' }}>
           <Link href={`/${type.slug}/${slug}`} passHref>
             <a sx={{ variant: 'link' }}>
               {type && type.title}: {title}
@@ -39,7 +39,7 @@ const CollectionPreview = ({
         </div>
       </header>
       {posts && (
-        <div sx={{ fontSize: 3, fontFamily: 'heading' }}>
+        <div sx={{ fontSize: 2, fontFamily: 'heading' }}>
           <CollectionPostsList posts={posts} />
         </div>
       )}
