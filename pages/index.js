@@ -1,4 +1,6 @@
 /** @jsxImportSource theme-ui */
+
+import { useRef } from 'react';
 import Head from 'next/head';
 
 import { getClient } from '@lib/sanity.server';
@@ -7,9 +9,12 @@ import Header from '@components/header';
 import CollectionPreview from '@components/collection-preview';
 import QuickPost from '@components/quick-post';
 import PostPreview from '@components/post-preview';
+import { filterPosts, useParams } from '@lib/helpers';
+import Filters from '@components/filters';
 
 export default function Home({ data }) {
-  const { posts } = data;
+  const { posts, tags } = data;
+  const [params, setParams] = useParams();
 
   // filter out posts that are already referenced somewhere else
   const unReferencedPosts = posts.filter((post) => {
@@ -32,6 +37,12 @@ export default function Home({ data }) {
     }
   }
 
+  function updateParams(e) {
+    const filter = e.target.dataset.filter;
+    setParams(filter);
+  }
+
+  const filteredPosts = filterPosts(unReferencedPosts, params);
   return (
     <div>
       <Head>
@@ -49,11 +60,18 @@ export default function Home({ data }) {
       />
       <div sx={{ variant: 'fullGrid' }}>
         <main sx={{ variant: 'fullGrid.contentCol' }}>
-          {unReferencedPosts && unReferencedPosts.map(renderContent)}
+          <header
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '10px 24px',
+              py: 6,
+            }}
+          >
+            <Filters onClick={updateParams} filters={tags} />
+          </header>
+          {filteredPosts && filteredPosts.map(renderContent)}
         </main>
-        {/* <aside sx={{gridColumn: 'auto / span 5'}}>
-          {tracker && <Tracker visible={showProgress} {...tracker} />}
-        </aside> */}
       </div>
 
       <footer></footer>
@@ -64,6 +82,7 @@ export default function Home({ data }) {
 export async function getStaticProps() {
   const allPostsQuery = `
     {
+      "tags": *[_type == 'tag'],
       "posts": *[_type in ["post", "collection", "quickPost"]] | order(_createdAt asc) {
         ...,
         _type == 'post' || _type == 'collection' => {
@@ -93,11 +112,7 @@ export async function getStaticProps() {
             ...,
             "slug": slug.current
           },
-          "allPostsTags": posts[]->.tags[]-> {
-            _id,
-            title,
-            "slug": slug.current,
-          },
+          'tags': posts[]->.tags[]->{"slug": slug.current, title, _id},
           "_lastUpdatedAt": posts[]-> | order(_updatedAt desc)[0]._updatedAt
         },
       }

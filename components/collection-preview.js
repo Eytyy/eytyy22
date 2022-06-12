@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
 
-import { getChildPostsUniqueTags } from '@lib/helpers';
 import Link from 'next/link';
 import CollectionPostsList from './collection-posts-list';
 import MetaDates from './meta-dates';
@@ -12,14 +11,15 @@ const CollectionPreview = ({
   posts,
   _createdAt,
   _lastUpdatedAt,
-  allPostsTags,
 }) => {
-  const tags = getChildPostsUniqueTags(allPostsTags);
+  const isDraft = posts
+    .map((post) => post.status)
+    .some((status) => status !== 'finished');
 
   return (
     <article sx={{ mb: [9] }}>
       <header sx={{ mb: 0 }}>
-        <div sx={{ variant: 'meta', mb: 2 }}>
+        <div sx={{ variant: 'meta', mt: 0, mb: 2 }}>
           {_createdAt && (
             <MetaDates prefix="posted on" date={_createdAt} />
           )}
@@ -27,7 +27,23 @@ const CollectionPreview = ({
             <MetaDates prefix="updated on" date={_lastUpdatedAt} />
           )}
         </div>
-        <h2 sx={{ variant: 'text.previewTitle' }}>
+        <h2
+          sx={{ variant: 'text.previewTitle', position: 'relative' }}
+        >
+          {isDraft && (
+            <i
+              sx={{
+                display: 'block',
+                bg: 'red',
+                width: '10px',
+                height: '10px',
+                borderRadius: '10px',
+                position: 'absolute',
+                left: '-20px',
+                top: '15px',
+              }}
+            ></i>
+          )}
           <Link href={`/${type.slug}/${slug}`} passHref>
             <a sx={{ variant: 'link' }}>
               {type && type.title}: {title}

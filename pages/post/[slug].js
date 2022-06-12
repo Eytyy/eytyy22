@@ -11,9 +11,11 @@ import CollectionPostsList from '@components/collection-posts-list';
 import Header from '@components/header';
 import MetaDates from '@components/meta-dates';
 import MetaTags from '@components/meta-tags';
-
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 const Post = ({ data }) => {
   if (!data) return null;
+
   const {
     _id,
     title,
@@ -51,7 +53,7 @@ const Post = ({ data }) => {
 
   const collectionInfo =
     (referencedIn && getCollectionInfo(referencedIn, _id)) || null;
-  console.log(collectionInfo);
+
   return (
     <>
       <Head>

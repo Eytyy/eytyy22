@@ -13,15 +13,13 @@ import Head from 'next/head';
 const Collection = ({ data }) => {
   if (!data) return null;
 
-  const {
-    title,
-    description,
-    posts,
-    slug,
-    allPostsTags,
-    _createdAt,
-  } = data;
+  const { title, description, posts, allPostsTags, _createdAt } =
+    data;
   const tags = getChildPostsUniqueTags(allPostsTags);
+  const isDraft = posts
+    .map((post) => post.status)
+    .some((status) => status !== 'finished');
+
   return (
     <>
       <Head>
@@ -47,14 +45,39 @@ const Collection = ({ data }) => {
           }}
         >
           <div sx={{ gridColumn: '1/7' }}>
-            <header sx={{ variant: 'page.header', mb: 6 }}>
+            <header
+              sx={{
+                variant: 'page.header',
+                mb: 6,
+                position: 'relative',
+              }}
+            >
+              {isDraft && (
+                <div
+                  sx={{
+                    fontSize: 0,
+                    display: 'flex',
+                    gap: 2,
+                    alignItems: 'center',
+                    mb: 2,
+                  }}
+                >
+                  <i
+                    sx={{
+                      display: 'inline-block',
+                      bg: 'red',
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '20px',
+                    }}
+                  ></i>
+                  Draft
+                </div>
+              )}
               <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
               <div sx={{ variant: 'meta' }}>
                 {_createdAt && (
-                  <MetaDates
-                    prefix="published on"
-                    date={_createdAt}
-                  />
+                  <MetaDates prefix="posted on" date={_createdAt} />
                 )}
                 {tags && <MetaTags tags={tags} />}
               </div>
