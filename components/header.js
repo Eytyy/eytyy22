@@ -1,11 +1,13 @@
 /** @jsxImportSource theme-ui */
 import Link from 'next/link';
-import {MdOutlineHistoryToggleOff} from 'react-icons/md';
+import { MdOutlineHistoryToggleOff } from 'react-icons/md';
 
-const Header = ({toggleProgress}) => {
+const Header = ({ toggleProgress }) => {
   return (
-    <div sx={{position: 'sticky', width: '100%', top: '0', zIndex: 10}}>
-      <div sx={{variant: 'fullGrid'}}>
+    <div
+      sx={{ position: 'sticky', width: '100%', top: '0', zIndex: 10 }}
+    >
+      <div sx={{ variant: 'fullGrid' }}>
         <div
           sx={{
             variant: 'fullGrid.fullWidthNoBleedCol',
@@ -15,7 +17,7 @@ const Header = ({toggleProgress}) => {
             py: [6],
           }}
         >
-          <Link href='/' passHref>
+          <Link href="/" passHref>
             <a
               sx={{
                 fontFamily: 'heading',
@@ -26,9 +28,6 @@ const Header = ({toggleProgress}) => {
               eytyy
             </a>
           </Link>
-          {/* <div onClick={toggleProgress}>
-          <MdOutlineHistoryToggleOff />
-        </div> */}
         </div>
       </div>
     </div>

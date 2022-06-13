@@ -1,6 +1,6 @@
 /** @jsxImportSource theme-ui */
 
-import { useRef } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 
 import { getClient } from '@lib/sanity.server';
@@ -37,12 +37,16 @@ export default function Home({ data }) {
     }
   }
 
-  function updateParams(e) {
-    const filter = e.target.dataset.filter;
-    setParams(filter);
+  function updateParams(filter) {
+    const param = filter?.slug;
+    setParams(param);
   }
 
-  const filteredPosts = filterPosts(unReferencedPosts, params);
+  const filteredPosts =
+    params.length > 0
+      ? filterPosts(unReferencedPosts, params)
+      : unReferencedPosts;
+
   return (
     <div>
       <Head>
@@ -68,7 +72,11 @@ export default function Home({ data }) {
               py: 6,
             }}
           >
-            <Filters onClick={updateParams} filters={tags} />
+            <Filters
+              activeFilters={params}
+              onClick={updateParams}
+              filters={tags}
+            />
           </header>
           {filteredPosts && filteredPosts.map(renderContent)}
         </main>
@@ -82,7 +90,7 @@ export default function Home({ data }) {
 export async function getStaticProps() {
   const allPostsQuery = `
     {
-      "tags": *[_type == 'tag'],
+      "tags": *[_type == 'tag']{..., "slug": slug.current},
       "posts": *[_type in ["post", "collection", "quickPost"]] | order(_createdAt asc) {
         ...,
         _type == 'post' || _type == 'collection' => {
