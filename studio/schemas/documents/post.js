@@ -47,6 +47,16 @@ export default {
       type: 'customBlockContent',
     },
     {
+      name: 'blocks',
+      type: 'array',
+      title: 'Blocks',
+      of: [
+        {
+          type: 'extraImage',
+        },
+      ],
+    },
+    {
       name: 'tags',
       title: 'Tags',
       type: 'array',

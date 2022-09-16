@@ -31,10 +31,10 @@ const Collection = ({ data }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <div sx={{ variant: 'fullGrid' }}>
+      <div sx={{ variant: 'superGrid' }}>
         <div
           sx={{
-            variant: 'fullGrid.fullWidthNoBleedCol',
+            variant: 'superGrid.fullWidthNoBleedCol',
             display: ['block', null, 'grid'],
             gridTemplateColumns: [
               'repeat(6,1fr)',

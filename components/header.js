@@ -1,34 +1,27 @@
 /** @jsxImportSource theme-ui */
+import { keyframes } from '@emotion/react';
 import Link from 'next/link';
-import { MdOutlineHistoryToggleOff } from 'react-icons/md';
 
-const Header = ({ toggleProgress }) => {
+const Header = () => {
+  const flip = keyframes({
+    '0%': { color: 'blue' },
+    '50%': { color: 'red' },
+    '100%': { color: 'orange' },
+  });
   return (
     <div
-      sx={{ position: 'sticky', width: '100%', top: '0', zIndex: 10 }}
+      sx={{ position: 'fixed', width: '100%', top: '0', zIndex: 30 }}
     >
-      <div sx={{ variant: 'fullGrid' }}>
+      <div sx={{ variant: 'superGrid' }}>
         <div
           sx={{
-            variant: 'fullGrid.fullWidthNoBleedCol',
+            variant: 'superGrid.fullWidthNoBleedCol',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             py: [6],
           }}
-        >
-          <Link href="/" passHref>
-            <a
-              sx={{
-                fontFamily: 'heading',
-                textDecoration: 'none',
-                color: 'accent',
-              }}
-            >
-              eytyy
-            </a>
-          </Link>
-        </div>
+        />
       </div>
     </div>
   );

@@ -1,20 +1,54 @@
 import Img from 'next/image';
 import React from 'react';
-import {useNextSanityImage} from 'next-sanity-image';
-import {sanityConfig} from '@lib/config';
+import { useNextSanityImage } from 'next-sanity-image';
+import { sanityConfig } from '@lib/config';
 
-const SanityImage = (props) => {
-  const {asset, alt = ''} = props;
-  const imageProps = useNextSanityImage(sanityConfig, asset);
-  if (!imageProps) return null;
+const SanityImage = ({ image, format = 'default' }) => {
+  switch (format) {
+    case 'square':
+      return <SqrdImage image={image} alt={image.alt} />;
+    default:
+      return <OriginalRatio image={image} alt={image.alt} />;
+  }
+};
+
+function OriginalRatio({ image, alt }) {
+  const props = useNextSanityImage(sanityConfig, image);
+  if (!props) return null;
   return (
     <Img
+      {...props}
       alt={alt}
-      {...imageProps}
-      layout='responsive'
-      sizes='(max-width: 800px) 100vw, 800px'
+      layout="responsive"
+      sizes="(min-width: 66em) 20vw,
+      (min-width: 44em) 50vw,
+      50vw"
     />
   );
+}
+
+const sqrImageBldr = (imgBldr, opts) => {
+  const w = opts.width;
+  return imgBldr.width(w).height(w);
 };
+
+function SqrdImage({ image, alt }) {
+  const props = useNextSanityImage(sanityConfig, image, {
+    imageBuilder: sqrImageBldr,
+  });
+  if (!props) return null;
+
+  return (
+    <Img
+      {...props}
+      alt={alt}
+      height={props.width}
+      layout="responsive"
+      sizes="(min-width: 66em) 20vw,
+      (min-width: 44em) 50vw,
+      50vw"
+    />
+  );
+}
 
 export default SanityImage;
