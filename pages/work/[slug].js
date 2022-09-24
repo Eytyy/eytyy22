@@ -1,25 +1,14 @@
 /** @jsxImportSource theme-ui */
-import { useEffect } from 'react';
 import Head from 'next/head';
 import { getClient } from '@lib/sanity.server';
 
-import { useNavData } from '@lib/context';
-import ProjectContainer from '@components/project/layout01';
+import ProjectContainer from '@components/project';
+import { navQuery, projectQuery } from '@lib/queries';
 
 const Project = ({ data }) => {
-  const { navData, setNav } = useNavData();
-  useEffect(() => {
-    if (data.projectsByStatus && navData.length === 0) {
-      const projects = data.projectsByStatus
-        ? data.projectsByStatus.flatMap((status) => status.projects)
-        : [];
-      const allData = [...projects, ...data.posts];
-      setNav(allData);
-    }
-  }, [setNav, navData, data]);
-
   if (!data.project) return null;
   const { title } = data.project;
+
   return (
     <>
       <Head>
@@ -30,7 +19,7 @@ const Project = ({ data }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ProjectContainer {...data.project} />
+      <ProjectContainer data={data} />
     </>
   );
 };
@@ -54,52 +43,11 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const data = await getClient().fetch(
     `{
-      "project": *[_type == 'project' && defined(slug) && slug.current == $slug][0] {
-        title, body, year, role, team[],
-        showMainMedia,
-        "mainMedia": {
-          "type": mainMediaType,
-          "style": mainMediaStyle,
-          mainMediaType == 'video' => {
-            "video": { "autoPlay": mainMediaVideo.autoPlay, "loop": mainMediaVideo.loop, "url": mainMediaVideo.file.asset->.url }
-          },
-          mainMediaType == 'image' => {
-            'image': mainMediaImage
-          },
-        },
-        "status": status->.slug.current, year,
-        sections[]{
-          _key, type, hasBody, body, name,
-          "layout": { parallax, behavior },
-          type == 'video' => {
-            "url": videoModule.file.asset->.url,
-            "caption": videoModule.caption,
-            "alt": videoModule.alt,
-            "loop": videoModule.loop,
-            "autoPlay": videoModule.autoPlay
-          },
-          type == 'image' => {
-            "image": imageModule.image,
-            "caption": imageModule.caption,
-            "alt": imageModule.alt
-          },
-          type == 'media' => {
-            "content": mediaModule.content[]{
-              ...,
-              _type == 'videoModule' => { "url": file.asset->.url },
-            }
-          }
-        }
-    },
-     "posts": *[_type in ["post"]] | order(_createdAt asc) {
-      _id, _type, "slug": slug.current, title
-    },
-    "projectsByStatus": *[_type == 'status'] | order(weight desc) {
-      weight,
-      "projects": *[_type == 'project' && references(^._id)] | order(year desc) {
-        _type, _id, title, "slug": slug.current, "type": type->.name, role, year
+      "project": ${projectQuery},
+      "navData": {
+        ${navQuery}
       }
-    }}
+    }
   `,
     {
       slug: params.slug,

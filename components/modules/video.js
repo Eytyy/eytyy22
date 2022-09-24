@@ -1,6 +1,7 @@
 /** @jsxImportSource theme-ui */
-import { MdPlayArrow } from 'react-icons/md';
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { CgPlayButtonO } from 'react-icons/cg';
+import { useState, useRef, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 export default function VideoModule({
   url,
@@ -9,20 +10,16 @@ export default function VideoModule({
   alt,
   loop,
   autoPlay = false,
-  inView,
 }) {
   const video = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [interacted, setInteracted] = useState(false);
-
+  const { ref, inView } = useInView({ threshold: 1 });
   const shouldAutoPlay = autoPlay && inView;
 
   const play = () => {
     setInteracted(true);
     video.current.play();
-    if (!big) {
-      video.current.requestFullscreen();
-    }
   };
 
   function onPause() {
@@ -30,6 +27,7 @@ export default function VideoModule({
   }
   function onPlay() {
     setIsPlaying(true);
+    setInteracted(true);
   }
   const stop = () => {
     setInteracted(true);
@@ -46,25 +44,28 @@ export default function VideoModule({
   }, [shouldAutoPlay, isPlaying, interacted, caption]);
 
   return (
-    <div sx={{ height: '100%', overflow: 'hidden' }}>
-      <div
-        sx={{
-          variant: 'video.playBox',
-          opacity: isPlaying ? '0' : '1',
-        }}
-        onClick={() => (isPlaying ? stop() : play())}
-      >
-        <MdPlayArrow />
-      </div>
+    <div ref={ref} sx={{ height: '100%', overflow: 'hidden' }}>
+      {!big && (
+        <div
+          sx={{
+            variant: 'video.playBox',
+            opacity: isPlaying ? '0' : '1',
+          }}
+          onClick={() => (isPlaying ? stop() : play())}
+        >
+          <CgPlayButtonO />
+        </div>
+      )}
       <video
+        onClick={() => setInteracted(true)}
         autoPlay={shouldAutoPlay}
-        loop={loop}
         muted={shouldAutoPlay}
         onPlay={onPlay}
         onPause={onPause}
         ref={video}
         sx={{ variant: 'video.default' }}
         src={url}
+        loop={loop}
       />
     </div>
   );

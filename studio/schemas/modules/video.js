@@ -28,5 +28,16 @@ export default {
       title: 'Loop',
       type: 'boolean',
     },
+    {
+      name: 'format',
+      title: 'Format',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'square', value: 'square' },
+          { title: 'landscape', value: 'landscape' },
+        ],
+      },
+    },
   ],
 };

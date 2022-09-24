@@ -21,12 +21,7 @@ import projectType from './documents/project-type';
 import status from './documents/status';
 
 import pageSection from './objects/page-section';
-import {
-  mediaModule,
-  imageModule,
-  videoModule,
-  contentModule,
-} from './modules';
+import { imageModule, videoModule, contentModule } from './modules';
 import person from './objects/person';
 
 export default createSchema({
@@ -46,7 +41,6 @@ export default createSchema({
     person,
 
     pageSection,
-    mediaModule,
     videoModule,
     imageModule,
     contentModule,

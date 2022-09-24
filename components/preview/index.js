@@ -2,36 +2,12 @@
 
 import Link from 'next/link';
 import { BsArrowUpRight } from 'react-icons/bs';
-export default function Preview({
-  onMouseEnter,
-  onMouseLeave,
-  fill = 'blue',
-  inverse = 'red',
-  _type,
-  active,
-  ...props
-}) {
-  return (
-    <div
-      sx={{
-        position: 'relative',
-        pt: '100%',
-        cursor: 'pointer',
-        bg: fill,
-        ':hover': {
-          bg: inverse,
-          a: { bg: active ? inverse : inverse },
-        },
-      }}
-      onMouseEnter={(e) => onMouseEnter(e.currentTarget)}
-      onMouseLeave={onMouseLeave}
-    >
-      <Block _type={_type} {...props} />
-    </div>
-  );
+
+export default function Preview({ _type, ...props }) {
+  return <Block _type={_type} {...props} />;
 }
 
-function Block({ format, _type, slug, link }) {
+function Block({ format, _type, slug, link, title }) {
   switch (format) {
     case 'link':
       return (
@@ -40,35 +16,22 @@ function Block({ format, _type, slug, link }) {
           target="_blank"
           rel="noreferrer"
           sx={{
-            position: 'absolute',
-            display: 'flex',
-            top: 0,
-            left: 0,
             width: '100%',
             height: '100%',
-            fontSize: 9,
+            fontSize: 3,
             color: 'transparent',
             alignItems: 'center',
             justifyContent: 'center',
-            ':hover': { color: 'white' },
           }}
         >
+          {title}
           <BsArrowUpRight />
         </a>
       );
     default:
       return (
         <Link href={getPageLink(_type, slug)} passHref>
-          <a
-            sx={{
-              position: 'absolute',
-              display: 'block',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-            }}
-          ></a>
+          <a sx={{}}>{title}</a>
         </Link>
       );
   }

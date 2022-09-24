@@ -64,7 +64,6 @@ const Post = ({ data }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       <article>
         <header sx={{ variant: 'page.header', mb: 6 }}>
           <h1 sx={{ mb: 4, variant: 'text.pageTitle' }}>{title}</h1>

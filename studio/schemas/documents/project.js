@@ -54,39 +54,12 @@ export default {
       group: 'header',
       hidden: ({ parent }) => parent.format === 'link',
     },
-
-    {
-      name: 'showMainMedia',
-      title: 'Add image/video to header?',
-      type: 'boolean',
-      fieldset: 'mainmedia',
-      group: 'header',
-      initialValue: false,
-      hidden: ({ parent }) => parent.format === 'link',
-    },
-    {
-      name: 'mainMediaStyle',
-      title: 'Style',
-      type: 'string',
-      fieldset: 'mainmedia',
-      group: 'header',
-      hidden: ({ parent }) =>
-        !parent.showMainMedia || parent.format === 'link',
-      options: {
-        list: [
-          { title: 'Background', value: 'bg' },
-          { title: 'Parallax', value: 'parallax' },
-        ],
-      },
-    },
     {
       name: 'mainMediaType',
       title: 'Type',
       type: 'string',
       fieldset: 'mainmedia',
       group: 'header',
-      hidden: ({ parent }) =>
-        !parent.showMainMedia || parent.format === 'link',
       options: {
         list: [
           { title: 'Video', value: 'video' },
@@ -95,26 +68,20 @@ export default {
       },
     },
     {
-      name: 'mainMediaVideo',
+      name: 'mainVideo',
       title: 'Video',
       type: 'videoModule',
       fieldset: 'mainmedia',
       group: 'header',
-      hidden: ({ parent }) =>
-        !parent.showMainMedia ||
-        parent.mainMediaType !== 'video' ||
-        parent.format === 'link',
+      hidden: ({ parent }) => parent.mainMediaType !== 'video',
     },
     {
-      name: 'mainMediaImage',
+      name: 'mainImage',
       title: 'Image',
       type: 'imageModule',
       fieldset: 'mainmedia',
       group: 'header',
-      hidden: ({ parent }) =>
-        !parent.showMainMedia ||
-        parent.mainMediatype !== 'image' ||
-        parent.format === 'link',
+      hidden: ({ parent }) => parent.mainMediaType !== 'image',
     },
     {
       name: 'sections',
@@ -122,7 +89,6 @@ export default {
       title: 'Sections',
       of: [{ type: 'pageSection', title: 'Section' }],
       group: 'main',
-      options: { editModal: 'fullscreen' },
       hidden: ({ parent }) => parent.format === 'link',
     },
     {
@@ -137,6 +103,12 @@ export default {
       type: 'reference',
       to: [{ type: 'status' }],
       title: 'Status',
+      group: 'meta',
+    },
+    {
+      name: 'launchDate',
+      type: 'string',
+      title: 'Launch Date',
       group: 'meta',
     },
     {
@@ -158,14 +130,6 @@ export default {
       type: 'array',
       title: 'Team',
       of: [{ type: 'person' }],
-      group: 'meta',
-      hidden: ({ parent }) => parent.format === 'link',
-    },
-    {
-      name: 'credits',
-      type: 'array',
-      title: 'Credits',
-      of: [{ type: 'string' }],
       group: 'meta',
       hidden: ({ parent }) => parent.format === 'link',
     },

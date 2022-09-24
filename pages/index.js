@@ -3,22 +3,11 @@
 import Head from 'next/head';
 
 import { getClient } from '@lib/sanity.server';
-import { useNavData } from '@lib/context';
-import { useEffect } from 'react';
+import { navQuery } from '@lib/queries';
+
+import MainMenu from '@components/nav/MainMenu';
 
 export default function Home({ data }) {
-  const { posts, projectsByStatus } = data;
-  const projects = projectsByStatus.flatMap(
-    (status) => status.projects
-  );
-
-  const { setNav } = useNavData();
-
-  useEffect(() => {
-    const allData = [...projects, ...posts];
-    setNav(allData);
-  }, [setNav, projects, posts]);
-
   return (
     <div>
       <Head>
@@ -29,35 +18,17 @@ export default function Home({ data }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <MainMenu data={data} />
     </div>
   );
 }
 
 export async function getStaticProps() {
-  const allPostsQuery = `{
-    "posts": *[_type in ["post"]] | order(_createdAt asc) {
-      _id,
-      _type,
-      "slug": slug.current,
-      title
-    },
-    "projectsByStatus": *[_type == 'status'] | order(weight desc) {
-      weight,
-      "projects": *[_type == 'project' && references(^._id)] | order(year desc) {
-        _type,
-        _id,
-        title,
-        "slug": slug.current,
-        "type": type->.name,
-        role,
-        year,
-        format,
-        link
-      }
-    },
+  const all = `{
+    ${navQuery}
   }
 `;
-  const data = await getClient().fetch(allPostsQuery);
+  const data = await getClient().fetch(all);
   return {
     props: {
       data,

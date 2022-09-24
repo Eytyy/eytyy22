@@ -21,6 +21,17 @@ export default {
         hotspot: true,
       },
     },
+    {
+      name: 'format',
+      title: 'Format',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'square', value: 'square' },
+          { title: 'landscape', value: 'landscape' },
+        ],
+      },
+    },
   ],
   preview: {
     select: {

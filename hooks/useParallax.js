@@ -18,12 +18,12 @@ export default function useParallax(inView, entry) {
   const waf = useRef(null);
   const ticking = useRef(null);
 
-  const { el, visible, initialized } = state;
+  const { el, visible } = state;
 
   // Initialize
   useEffect(() => {
-    if (inView && typeof window !== 'undefined' && !initialized) {
-      const { height, top } = entry.boundingClientRect;
+    if (inView && typeof window !== 'undefined') {
+      const { height, top } = entry.target.getBoundingClientRect();
       ssp.current = lsp.current = window.scrollY;
 
       const initialVisiblity = getInitialVisibility(top, height);
@@ -34,11 +34,10 @@ export default function useParallax(inView, entry) {
           el: { top, height, node: entry.target },
           visible: initialVisiblity,
           leftToScroll: height - initialVisiblity,
-          initialized: true,
         },
       });
     }
-  }, [entry, inView, initialized]);
+  }, [entry, inView]);
 
   // Update on Scroll
   useEffect(() => {
@@ -89,7 +88,16 @@ export default function useParallax(inView, entry) {
     };
   }, [inView, entry, state]);
 
+  function didSectionReachTop(offset = 0) {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    return visible >= window.innerHeight - offset;
+  }
+
   return {
+    didSectionReachTop: didSectionReachTop,
+    el: state.el,
     exiting: state.leftToScroll < 0,
     visible: visible,
     percentage:
@@ -122,5 +130,4 @@ const initialState = {
   el: { node: null, height: 0, top: 0 },
   visible: 0,
   leftToScroll: 0,
-  initialized: false,
 };
