@@ -1,15 +1,10 @@
 /** @jsxImportSource theme-ui */
 import { useProjectNavContext } from '@components/project/context';
 import Link from 'next/link';
-import Contact from './Contact';
 
 export default function InnerTopMenu({ data }) {
   const { projects } = data;
-  const {
-    menuVisible: visible,
-    toggleMenu,
-    closeMenu,
-  } = useProjectNavContext();
+  const { menuVisible: visible, toggleMenu } = useProjectNavContext();
 
   return (
     <nav
@@ -26,17 +21,8 @@ export default function InnerTopMenu({ data }) {
       }}
     >
       <div sx={{ variant: 'menu.inner', position: 'relative' }}>
-        <Projects projects={projects} onClick={closeMenu} />
+        <Projects projects={projects} />
         <div
-          sx={{
-            position: 'absolute',
-            top: 7,
-            right: 0,
-          }}
-        >
-          <div>beta</div>
-        </div>
-        {/* <div
           sx={{
             position: 'absolute',
             top: 7,
@@ -58,7 +44,7 @@ export default function InnerTopMenu({ data }) {
               </a>
             </Link>
           </div>
-        </div> */}
+        </div>
 
         <div
           onClick={toggleMenu}
@@ -72,14 +58,30 @@ export default function InnerTopMenu({ data }) {
         >
           x close
         </div>
-        <Contact />
+
+        <Link href="/info" passHref>
+          <a
+            sx={{
+              position: 'absolute',
+              bottom: 7,
+              right: 0,
+              color: 'accent',
+              textDecoration: 'none',
+              mt: 2,
+              display: 'block',
+            }}
+          >
+            info &rarr;
+          </a>
+        </Link>
+
         <MidSection />
       </div>
     </nav>
   );
 }
 
-function Projects({ projects, onClick }) {
+function Projects({ projects }) {
   return (
     <div
       sx={{
@@ -90,22 +92,18 @@ function Projects({ projects, onClick }) {
         gap: 9,
       }}
     >
-      <div sx={{ maxWidth: '400px' }}>
-        {projects.map(({ title, _id, slug, year }, index) => (
-          <div
-            onClick={() => {
-              console.log('close');
-              onClick();
-            }}
-            key={_id}
-          >
-            <Link href={`/work/${slug}`} passHref>
-              <a sx={{ color: 'blue' }}>
-                {year} {title}
-              </a>
-            </Link>
-          </div>
-        ))}
+      <div>
+        <div sx={{ width: '400px' }}>
+          {projects.map(({ title, _id, slug, year }, index) => (
+            <div key={_id}>
+              <Link href={`/work/${slug}`} passHref>
+                <a sx={{ color: 'blue' }}>
+                  {year} {title}
+                </a>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

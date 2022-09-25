@@ -3,10 +3,10 @@ import Head from 'next/head';
 import { getClient } from '@lib/sanity.server';
 
 import ProjectContainer from '@components/project';
-import { navQuery, projectQuery } from '@lib/queries';
+import { otherProjects, projectQuery } from '@lib/queries';
 
 const Project = ({ data }) => {
-  if (!data.project) return null;
+  if (!data || !data.project) return null;
   const { title } = data.project;
 
   return (
@@ -45,7 +45,7 @@ export async function getStaticProps({ params }) {
     `{
       "project": ${projectQuery},
       "navData": {
-        ${navQuery}
+        ${otherProjects}
       }
     }
   `,

@@ -10,6 +10,9 @@ import QuickPost from '@components/quick-post';
 import PostPreview from '@components/post-preview';
 import { filterPosts, useParams } from '@lib/helpers';
 import Filters from '@components/filters';
+import MenuToggle from '@components/nav/MenuToggle';
+import HomeLink from '@components/nav/HomeLink';
+import { allProjects } from '@lib/queries';
 
 export default function Home({ data }) {
   const { posts, tags } = data;
@@ -56,10 +59,10 @@ export default function Home({ data }) {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <div sx={{ variant: 'superGrid' }}>
+      <div sx={{ variant: 'superGrid', mt: 9 }}>
+        <HomeLink />
         <main sx={{ variant: 'superGrid.contentCol' }}>
-          <header
+          {/* <header
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
@@ -72,8 +75,18 @@ export default function Home({ data }) {
               onClick={updateParams}
               filters={tags}
             />
-          </header>
+          </header> */}
           {filteredPosts && filteredPosts.map(renderContent)}
+          {/* <div
+            sx={{
+              position: 'fixed',
+              bottom: [7],
+              left: 0,
+              zIndex: 3,
+            }}
+          >
+            <MenuToggle />
+          </div> */}
         </main>
       </div>
     </div>
@@ -83,17 +96,14 @@ export default function Home({ data }) {
 export async function getStaticProps() {
   const allPostsQuery = `
     {
+      "navData": {
+        ${allProjects}
+      }
       "tags": *[_type == 'tag']{..., "slug": slug.current},
-      "posts": *[_type in ["post", "collection", "quickPost"]] | order(_createdAt asc) {
+      "posts": *[_type in ["post", "collection"]] | order(_createdAt asc) {
         ...,
         _type == 'post' || _type == 'collection' => {
           "slug": slug.current,
-        },
-        _type == "quickPost" => {
-          tags[]-> {
-            ...,
-            "slug": slug.current
-          },
         },
         // flag posts that are already referenced in a collection so we can filter them out
         // on the front-end

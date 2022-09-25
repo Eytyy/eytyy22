@@ -1,6 +1,5 @@
 /** @jsxImportSource theme-ui */
-import { CgMoreAlt } from 'react-icons/cg';
-import { useProjectNavContext } from './project/context';
+import { useProjectNavContext } from '@components/project/context';
 
 export default function MenuToggle() {
   const { toggleMenu } = useProjectNavContext();
@@ -9,17 +8,22 @@ export default function MenuToggle() {
       onClick={toggleMenu}
       sx={{
         position: 'fixed',
-        bottom: [2, 4],
+        bottom: [7],
         left: 0,
-        variant: 'superGrid',
         zIndex: 3,
-        fontSize: 6,
+        variant: 'superGrid',
         color: 'accent',
         cursor: 'pointer',
       }}
     >
-      <div sx={{ gridColumn: '2/3' }}>
-        <CgMoreAlt />
+      <div
+        sx={{
+          gridColumn: '2/4',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        menu
       </div>
     </div>
   );

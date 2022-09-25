@@ -7,7 +7,6 @@ export default function VideoModule({
   url,
   big,
   caption,
-  alt,
   loop,
   autoPlay = false,
 }) {
@@ -22,17 +21,18 @@ export default function VideoModule({
     video.current.play();
   };
 
-  function onPause() {
-    setIsPlaying(false);
-  }
-  function onPlay() {
-    setIsPlaying(true);
-    setInteracted(true);
-  }
   const stop = () => {
     setInteracted(true);
     video.current.pause();
   };
+
+  function onPause() {
+    setIsPlaying(false);
+  }
+
+  function onPlay() {
+    setIsPlaying(true);
+  }
 
   useEffect(() => {
     if (!isPlaying && shouldAutoPlay && !interacted) {

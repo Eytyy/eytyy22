@@ -7,7 +7,7 @@ export default function HomeLink() {
     <div
       sx={{
         position: 'fixed',
-        top: 2,
+        top: 7,
         right: 0,
         variant: 'superGrid',
         zIndex: 10,
@@ -20,13 +20,8 @@ export default function HomeLink() {
         }}
       >
         <Link href="/" passHref>
-          <a
-            sx={{
-              fontSize: 6,
-              color: 'accent',
-            }}
-          >
-            <CgClose />
+          <a sx={{ textDecoration: 'none', color: 'accent' }}>
+            &larr; home
           </a>
         </Link>
       </div>

@@ -1,22 +1,19 @@
 /** @jsxImportSource theme-ui */
 
 import { useInView } from 'react-intersection-observer';
-import { PortableText } from '@portabletext/react';
-
-import myPortableTextComponents from '@lib/portablet-text-component';
 
 import Section from './section';
-import MainMedia from './main-media';
 import InnerBottomMenu from '@components/nav/InnerBottomMenu';
 import InnerTopMenu from '@components/nav/InnerTopMenu';
 
 import TeamMember from '@components/TeamMember';
-import MenuToggle from '@components/MenuToggle';
-import HomeLink from '@components/HomeLink';
 import { ProjectContextProvider } from './context';
 import ProjectMain from './Main';
+import HomeLink from '@components/nav/HomeLink';
+import MenuToggle from '@components/nav/MenuToggle';
 
 export default function ProjectContainer({ data }) {
+  const { ref, inView } = useInView();
   const {
     title,
     year,
@@ -28,33 +25,72 @@ export default function ProjectContainer({ data }) {
     status,
     launchDate,
   } = data.project;
-
-  const { ref, inView } = useInView();
-
   return (
     <ProjectContextProvider>
       <article>
-        <InnerTopMenu data={data.navData} sticky={false} />
+        <InnerTopMenu data={data.navData} />
         <HomeLink />
+        <div
+          sx={{
+            variant: 'superGrid',
+            position: 'sticky',
+            top: 7,
+            zIndex: 2,
+          }}
+        >
+          <header sx={{ gridColumn: ['2/5', '2/5', '2/7'] }}>
+            <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
+            <div sx={{ variant: 'meta' }}>
+              {status === 'in-progress' ? (
+                <span
+                  sx={{
+                    display: ['grid'],
+                    gridTemplateColumns: 'auto 1fr',
+                    alignItems: 'center',
+                    gap: 2,
+                  }}
+                >
+                  <span
+                    sx={{
+                      display: 'inline-block',
+                      height: '18px',
+                      width: '18px',
+                      borderRadius: '100%',
+                      bg: 'red',
+                    }}
+                  />
+                  {launchDate}
+                </span>
+              ) : (
+                year
+              )}
+              {` ${role}`}
+            </div>
+          </header>
+        </div>
         <ProjectMain
-          title={title}
-          year={year}
-          role={role}
           mainMedia={mainMedia}
           body={body}
           status={status}
-          launchDate={launchDate}
         />
         <ProjectContent team={team} sections={sections} />
-        <div ref={ref} />
 
-        <InnerBottomMenu
-          data={data.navData.projects}
-          type="projects"
-          sticky={false}
-        />
-        {!inView && <MenuToggle />}
+        {!inView && (
+          <div
+            sx={{
+              position: 'fixed',
+              bottom: [7],
+              left: 0,
+              zIndex: 3,
+            }}
+          >
+            <MenuToggle />
+          </div>
+        )}
       </article>
+      <div ref={ref}>
+        <InnerBottomMenu data={data.navData.projects} />
+      </div>
     </ProjectContextProvider>
   );
 }
@@ -69,10 +105,10 @@ function ProjectContent({ sections, team }) {
           ))}
         </div>
       )}
-      {team && (
+      {/* {team && (
         <section sx={{ variant: 'menu', position: 'relative' }}>
           <div sx={{ gridColumn: '2/14' }}>
-            <span>Team: </span>
+            <span>Partners: </span>
             {team.map((m, i) => (
               <TeamMember
                 last={team.length - 1 === i}
@@ -82,7 +118,7 @@ function ProjectContent({ sections, team }) {
             ))}
           </div>
         </section>
-      )}
+      )} */}
     </div>
   );
 }

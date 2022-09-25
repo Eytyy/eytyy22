@@ -3,41 +3,9 @@ import { PortableText } from '@portabletext/react';
 import MainMedia from './main-media';
 
 /** @jsxImportSource theme-ui */
-export default function ProjectMain({
-  title,
-  year,
-  role,
-  mainMedia,
-  body,
-  status,
-  launchDate,
-}) {
+export default function ProjectMain({ mainMedia, body }) {
   return (
     <div sx={{ variant: 'projectSection' }}>
-      <header sx={{ variant: 'projectSection.header' }}>
-        <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
-        <div sx={{ variant: 'meta' }}>
-          {status === 'in-progress' ? (
-            <span
-              sx={{ display: 'flex', gap: 2, alignItems: 'center' }}
-            >
-              <span
-                sx={{
-                  display: 'inline-block',
-                  height: '18px',
-                  width: '18px',
-                  borderRadius: '100%',
-                  bg: 'red',
-                }}
-              />
-              Launch date: {launchDate}
-            </span>
-          ) : (
-            year
-          )}
-          {` ${role}`}
-        </div>
-      </header>
       <div sx={{ variant: 'projectSection.main' }}>
         <div
           sx={{

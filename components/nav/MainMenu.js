@@ -1,128 +1,86 @@
 /** @jsxImportSource theme-ui */
-import PostPreview from '@components/preview/post';
-import ProjectPreview from '@components/preview/project';
-import { useNav } from '@lib/context';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useRef } from 'react';
-import { useCallback } from 'react';
+import Contact from './Contact';
+import ProjectsMenu from './ProjectsMenu';
 
 export default function MainMenu({ data }) {
-  const { updateNavHeight } = useNav();
-  const { projects, posts } = data;
-  const router = useRouter();
-  const { asPath } = router;
-  const routeRef = useRef();
-
-  const measuredHeight = useCallback(
-    (node) => {
-      if (node && routeRef.current !== asPath) {
-        updateNavHeight(node.offsetHeight);
-        routeRef.current = asPath;
-      }
-    },
-    [updateNavHeight, asPath]
-  );
+  const { projects } = data;
 
   return (
-    <nav
-      ref={measuredHeight}
-      sx={{ variant: 'menu', minHeight: '100vh' }}
-    >
-      <div sx={{ variant: 'menu.inner' }}>
-        <div sx={{ variant: 'menu.divider' }} />
+    <nav sx={{ variant: 'superGrid', minHeight: '100vh' }}>
+      <div sx={{ variant: 'menu.inner', position: 'relative' }}>
         <ProjectsMenu projects={projects} />
-        <div sx={{ variant: 'menu.divider' }} />
-        <PostsMenu posts={posts} />
-        <div sx={{ variant: 'menu.divider' }} />
-        <span>
-          <Link href="/about" passHref>
-            <a sx={{ variant: 'menu.link' }}> ABOUT</a>
-          </Link>
-          <span sx={{ variant: 'menu.separator' }}>.</span>
-        </span>
+        <div
+          sx={{
+            display: ['none', null, 'block'],
+            position: 'absolute',
+            bottom: 7,
+            left: 0,
+          }}
+        >
+          <div>beta version</div>
+          <div>next update &rarr; 26 Sep 22</div>
+        </div>
+        {/* <div
+          sx={{
+            position: 'absolute',
+            bottom: 7,
+            left: 0,
+            display: 'grid',
+            gap: 9,
+          }}
+        >
+          <div>
+            <Link href="/posts" passHref>
+              <a
+                sx={{
+                  color: 'accent',
+                  textDecoration: 'none',
+                  mt: 4,
+                  display: 'block',
+                }}
+              >
+                blog &rarr;
+              </a>
+            </Link>
+          </div>
+        </div> */}
+
+        <Contact />
+
+        {/* <Link href="/info" passHref>
+          <a
+            sx={{
+              position: 'absolute',
+              bottom: 7,
+              right: 0,
+              color: 'accent',
+              textDecoration: 'none',
+              mt: 2,
+              display: 'block',
+            }}
+          >
+            info &rarr;
+          </a>
+        </Link> */}
+        <MidSection />
       </div>
     </nav>
   );
 }
 
-const useRouteInfo = (page) => {
-  const { pathname, query } = useRouter();
-  const inner = typeof query.slug !== 'undefined';
-  const front = pathname === '/';
-  const active = front ? false : pathname.split('/')[1] === page;
-  return {
-    inner,
-    front,
-    active,
-    slug: query.slug,
-  };
-};
-
-function PostsMenu({ posts }) {
-  const { active, front, inner, slug } = useRouteInfo('posts');
-
-  if ((!active && !front) || !posts) {
-    return (
-      <span>
-        <Link href="/posts" passHref>
-          <a sx={{ variant: 'menu.link' }}>BLOG</a>
-        </Link>
-        <span sx={{ variant: 'menu.separator' }}>, </span>
-      </span>
-    );
-  }
-
-  if (inner && active) {
-    const currentPageIndex = posts.findIndex(
-      (post) => post.slug === slug
-    );
-    const nextPage = posts[currentPageIndex + 1];
-    const prevPage = posts[currentPageIndex - 1];
-
-    return (
-      <>
-        <h2 sx={{ display: 'inline', fontSize: '1em' }}>BLOG: </h2>
-        <Link href="/posts" passHref>
-          <a sx={{ variant: 'menu.link' }}>All, </a>
-        </Link>
-        {prevPage && <PostPreview last={false} {...prevPage} />}
-        {nextPage && <PostPreview last={true} {...nextPage} />}
-      </>
-    );
-  }
-
+function MidSection() {
   return (
-    <>
-      <h2 sx={{ variant: 'menu.label' }}>BLOG: </h2>
-      {posts.map((post, index) => (
-        <PostPreview
-          last={index === posts.length - 1}
-          key={post._id}
-          {...post}
-        />
-      ))}
-    </>
-  );
-}
-
-function ProjectsMenu({ projects }) {
-  const { inner } = useRouteInfo('work');
-
-  if (!projects) return null;
-
-  return (
-    <>
-      <h2 sx={{ variant: 'menu.label' }}>
-        {inner ? 'More Work: ' : 'WORK: '}{' '}
-      </h2>
-      {projects.map((project, index) => (
-        <ProjectPreview
-          last={index === projects.length - 1}
-          key={project._id}
-          {...project}
-        />
-      ))}
-    </>
+    <div
+      sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        bg: 'blue',
+        width: '33.33vh',
+        height: '33.33vh',
+        borderRadius: '100%',
+        transform: 'translate(-50%, -50%)',
+      }}
+    />
   );
 }

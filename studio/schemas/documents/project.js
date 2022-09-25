@@ -18,6 +18,10 @@ export default {
   ],
   fieldsets: [
     {
+      name: 'preview',
+      title: 'Preview Media',
+    },
+    {
       name: 'mainmedia',
       title: 'Main Media',
     },
@@ -53,6 +57,35 @@ export default {
       type: 'blockContent',
       group: 'header',
       hidden: ({ parent }) => parent.format === 'link',
+    },
+    {
+      name: 'previewType',
+      title: 'Type',
+      type: 'string',
+      fieldset: 'preview',
+      group: 'main',
+      options: {
+        list: [
+          { title: 'Video', value: 'video' },
+          { title: 'Image', value: 'image' },
+        ],
+      },
+    },
+    {
+      name: 'previewVideo',
+      title: 'Video',
+      type: 'videoModule',
+      fieldset: 'preview',
+      group: 'main',
+      hidden: ({ parent }) => parent.previewType !== 'video',
+    },
+    {
+      name: 'previewImage',
+      title: 'Image',
+      type: 'imageModule',
+      fieldset: 'preview',
+      group: 'main',
+      hidden: ({ parent }) => parent.previewType !== 'image',
     },
     {
       name: 'mainMediaType',
