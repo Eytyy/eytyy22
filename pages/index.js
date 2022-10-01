@@ -6,10 +6,11 @@ import { getClient } from '@lib/sanity.server';
 import { navQuery } from '@lib/queries';
 
 import MainMenu from '@components/nav/MainMenu';
+import TransitionLayout from '@components/TransitionLayout';
 
 export default function Home({ data }) {
   return (
-    <div>
+    <TransitionLayout>
       <Head>
         <title>Eytyy</title>
         <meta
@@ -19,7 +20,7 @@ export default function Home({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <MainMenu data={data} />
-    </div>
+    </TransitionLayout>
   );
 }
 

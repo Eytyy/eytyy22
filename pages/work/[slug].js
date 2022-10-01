@@ -4,13 +4,14 @@ import { getClient } from '@lib/sanity.server';
 
 import ProjectContainer from '@components/project';
 import { otherProjects, projectQuery } from '@lib/queries';
+import TransitionLayout from '@components/TransitionLayout';
 
 const Project = ({ data }) => {
   if (!data || !data.project) return null;
   const { title } = data.project;
 
   return (
-    <>
+    <TransitionLayout>
       <Head>
         <title>{title}</title>
         <meta
@@ -20,7 +21,7 @@ const Project = ({ data }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <ProjectContainer data={data} />
-    </>
+    </TransitionLayout>
   );
 };
 

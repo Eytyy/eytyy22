@@ -2,9 +2,5 @@
 import { DataProvider } from '@lib/context';
 
 export default function Layout({ children }) {
-  return (
-    <DataProvider>
-      <main>{children}</main>
-    </DataProvider>
-  );
+  return <DataProvider>{children}</DataProvider>;
 }
