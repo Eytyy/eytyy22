@@ -10,43 +10,53 @@ import post from './documents/post';
 import collection from './documents/collection';
 import tag from './documents/tag';
 import collectionType from './documents/collectionType';
-import progressTracker from './progress-tracker';
 
-import blockContent from './blockContent';
-import customBlockContent from './customBlockContent';
-import progressItem from './progress-item';
-import extraImage from './objects/extra-image';
 import project from './documents/project';
 import projectType from './documents/project-type';
 import status from './documents/status';
 
+import {
+  imageModule,
+  videoModule,
+  contentModule,
+  seoModule,
+} from './modules';
+
+import blockContent from './blockContent';
+import customBlockContent from './customBlockContent';
 import pageSection from './objects/page-section';
-import { imageModule, videoModule, contentModule } from './modules';
 import person from './objects/person';
+import seo from './documents/settings/seo';
 
 export default createSchema({
   name: 'default',
   types: schemaTypes.concat([
+    // Docs
     quickPost,
     post,
     collection,
     tag,
     collectionType,
-    progressTracker,
-    extraImage,
 
     project,
     projectType,
     status,
+
+    // .. settings
+    seo,
+
+    // Objects
+    pageSection,
     person,
 
-    pageSection,
+    // .. modules
     videoModule,
     imageModule,
     contentModule,
+    seoModule,
 
+    // .. block content
     blockContent,
     customBlockContent,
-    progressItem,
   ]),
 });

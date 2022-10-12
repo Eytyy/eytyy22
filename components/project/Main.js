@@ -5,14 +5,18 @@ import MainMedia from './main-media';
 /** @jsxImportSource theme-ui */
 export default function ProjectMain({ mainMedia, body }) {
   return (
-    <div sx={{ variant: 'projectSection' }}>
-      <div sx={{ variant: 'projectSection.main' }}>
+    <div sx={{ variant: 'projectSection', position: 'relative' }}>
+      <div
+        sx={{ variant: 'projectSection.main', height: '100vh', m: 0 }}
+      >
         <div
           sx={{
             variant:
               mainMedia.format == 'square'
                 ? 'projectSection.squareInner'
                 : 'projectSection.defaultInner',
+            m: 0,
+            alignSelf: 'center',
           }}
         >
           <div

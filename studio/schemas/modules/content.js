@@ -3,10 +3,6 @@ export default {
   title: 'Content',
   name: 'contentModule',
   fields: [
-    {
-      name: 'content',
-      title: 'Content',
-      type: 'blockContent',
-    },
+    { name: 'content', title: 'Content', type: 'blockContent' },
   ],
 };

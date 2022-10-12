@@ -23,7 +23,7 @@ const PostPreview = ({
           )}
         </div>
         <h2 sx={{ variant: 'text.previewTitle' }}>
-          <Link href={`/posts/${slug}`} passHref>
+          <Link href={`/blog/${slug}`} passHref>
             <a sx={{ variant: 'link' }}>{title}</a>
           </Link>
         </h2>

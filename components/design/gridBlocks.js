@@ -1,5 +1,4 @@
 /** @jsxImportSource theme-ui */
-import React from 'react';
 import Block from './block';
 
 export default function GridBlocks({ blocks, inView = true }) {

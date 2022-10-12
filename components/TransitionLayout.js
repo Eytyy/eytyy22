@@ -1,21 +1,20 @@
-import React from 'react';
+/** @jsxImportSource theme-ui */
 import { motion } from 'framer-motion';
 
 const variants = {
-  hidden: { opacity: 0, x: 0, y: -100 },
-  enter: { opacity: 1, x: 0, y: 0 },
-  exit: { opacity: 0, x: 0, y: -100 },
+  enter: { opacity: 1 },
+  exit: { opacity: 0 },
 };
 
 export default function TransitionLayout({ children }) {
   return (
     <motion.main
+      sx={{ opacity: 0 }}
       variants={variants}
-      initial="hidden"
+      initial="false"
       animate="enter"
       exit="exit"
-      transition={{ type: 'liner' }}
-      className=""
+      transition={{ duration: 1 }}
     >
       {children}
     </motion.main>

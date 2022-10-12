@@ -2,6 +2,7 @@ export default {
   name: 'post',
   title: 'Post',
   type: 'document',
+  groups: [{ name: 'seo', title: 'SEO' }],
   fields: [
     {
       name: 'status',
@@ -16,19 +17,12 @@ export default {
       },
       initialValue: 'not-started',
     },
-    {
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-    },
+    { name: 'title', title: 'Title', type: 'string' },
     {
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
+      options: { source: 'title', maxLength: 96 },
     },
     {
       name: 'publishedAt',
@@ -41,20 +35,12 @@ export default {
         calendarTodayLabel: 'Today',
       },
     },
-    {
-      name: 'body',
-      title: 'Body',
-      type: 'customBlockContent',
-    },
+    { name: 'body', title: 'Body', type: 'customBlockContent' },
     {
       name: 'blocks',
       type: 'array',
       title: 'Blocks',
-      of: [
-        {
-          type: 'extraImage',
-        },
-      ],
+      of: [{ type: 'imageModule' }],
     },
     {
       name: 'tags',
@@ -62,12 +48,15 @@ export default {
       type: 'array',
       of: [{ type: 'reference', to: { type: 'tag' } }],
     },
+    {
+      name: 'seo',
+      title: 'SEO',
+      type: 'seoModule',
+      group: 'seo',
+    },
   ],
   preview: {
-    select: {
-      title: 'title',
-      publishedAt: 'publishedAt',
-    },
+    select: { title: 'title', publishedAt: 'publishedAt' },
     prepare(selection) {
       const { publishedAt } = selection;
       return Object.assign({}, selection, {

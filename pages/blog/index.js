@@ -62,7 +62,7 @@ export default function Home({ data }) {
       <div sx={{ variant: 'superGrid', mt: 9 }}>
         <HomeLink />
         <main sx={{ variant: 'superGrid.contentCol' }}>
-          {/* <header
+          <header
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
@@ -75,18 +75,8 @@ export default function Home({ data }) {
               onClick={updateParams}
               filters={tags}
             />
-          </header> */}
+          </header>
           {filteredPosts && filteredPosts.map(renderContent)}
-          {/* <div
-            sx={{
-              position: 'fixed',
-              bottom: [7],
-              left: 0,
-              zIndex: 3,
-            }}
-          >
-            <MenuToggle />
-          </div> */}
         </main>
       </div>
     </div>
@@ -97,8 +87,8 @@ export async function getStaticProps() {
   const allPostsQuery = `
     {
       "navData": {
-        ${allProjects}
-      }
+        "projects": ${allProjects}
+      },
       "tags": *[_type == 'tag']{..., "slug": slug.current},
       "posts": *[_type in ["post", "collection"]] | order(_createdAt asc) {
         ...,

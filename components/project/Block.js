@@ -1,11 +1,10 @@
 /** @jsxImportSource theme-ui */
 import { useInView } from 'react-intersection-observer';
-import SanityImage from '@components/sanity-image';
 import VideoModule from '@components/modules/video';
 import AudioModule from '@components/modules/audio';
 import ContentModule from '@components/modules/content';
 import { LinkBtn } from './LinkBtn';
-import ResizeBtn from './ResizeBtn';
+import ImageModule from '@components/modules/image';
 
 export default function Block({ block, layout, link }) {
   const { ref, inView } = useInView({ threshold: 1 });
@@ -36,16 +35,16 @@ export default function Block({ block, layout, link }) {
               transition: 'all 350ms ease-in-out',
             }}
           >
-            <div
-              sx={{
-                variant: link
-                  ? 'projectSection.floatingBtn.link'
-                  : 'projectSection.floatingBtn.resize',
-                opacity: inView ? '1' : 0,
-              }}
-            >
-              {link ? <LinkBtn link={link} /> : <ResizeBtn />}
-            </div>
+            {link && (
+              <div
+                sx={{
+                  variant: 'projectSection.floatingBtn.link',
+                  opacity: inView ? '1' : 0,
+                }}
+              >
+                <LinkBtn link={link} />
+              </div>
+            )}
             <BlockContent
               layout={layout}
               inView={inView}
@@ -61,7 +60,7 @@ export default function Block({ block, layout, link }) {
 function BlockContent({ _type, format, ...props }) {
   switch (_type) {
     case 'imageModule':
-      return <SanityImage format={format} {...props} />;
+      return <ImageModule format={format} {...props} />;
     case 'videoModule':
       return <VideoModule {...props} />;
     case 'audioModule':

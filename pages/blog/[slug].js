@@ -8,7 +8,6 @@ import { getClient } from '@lib/sanity.server';
 import myPortableTextComponents from '@lib/portablet-text-component';
 
 import CollectionPostsList from '@components/collection-posts-list';
-import Header from '@components/header';
 import MetaDates from '@components/meta-dates';
 import MetaTags from '@components/meta-tags';
 

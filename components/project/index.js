@@ -3,14 +3,19 @@
 import { useInView } from 'react-intersection-observer';
 
 import Section from './section';
-import InnerBottomMenu from '@components/nav/InnerBottomMenu';
-import InnerTopMenu from '@components/nav/InnerTopMenu';
+import FooterMenu from '@components/nav/FooterMenu';
+import MainMenu from '@components/nav/MainMenu';
 
 import TeamMember from '@components/TeamMember';
+
+import { getDocumentLink } from '@lib/helpers';
 import { ProjectContextProvider } from './context';
-import ProjectMain from './Main';
+
 import HomeLink from '@components/nav/HomeLink';
 import MenuToggle from '@components/nav/MenuToggle';
+import SEO from '@components/SEO';
+
+import ProjectMain from './Main';
 
 export default function ProjectContainer({ data }) {
   const { ref, inView } = useInView();
@@ -24,50 +29,27 @@ export default function ProjectContainer({ data }) {
     mainMedia,
     status,
     launchDate,
+    slug,
+    seo,
   } = data.project;
+
   return (
     <ProjectContextProvider>
+      <SEO
+        seo={seo}
+        title={title}
+        url={getDocumentLink('work', slug)}
+      />
       <article>
-        <InnerTopMenu data={data.navData} />
+        <MainMenu inner={true} data={data.navData} />
         <HomeLink />
-        <div
-          sx={{
-            variant: 'superGrid',
-            position: 'sticky',
-            top: 7,
-            zIndex: 2,
-          }}
-        >
-          <header sx={{ gridColumn: ['2/5', '2/5', '2/7'] }}>
-            <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
-            <div sx={{ variant: 'meta' }}>
-              {status === 'in-progress' ? (
-                <span
-                  sx={{
-                    display: ['grid'],
-                    gridTemplateColumns: 'auto 1fr',
-                    alignItems: 'center',
-                    gap: 2,
-                  }}
-                >
-                  <span
-                    sx={{
-                      display: 'inline-block',
-                      height: '18px',
-                      width: '18px',
-                      borderRadius: '100%',
-                      bg: 'red',
-                    }}
-                  />
-                  {launchDate}
-                </span>
-              ) : (
-                year
-              )}
-              {` ${role}`}
-            </div>
-          </header>
-        </div>
+        <ProjectHeader
+          title={title}
+          year={year}
+          role={role}
+          launchDate={launchDate}
+          status={status}
+        />
         <ProjectMain
           mainMedia={mainMedia}
           body={body}
@@ -77,21 +59,59 @@ export default function ProjectContainer({ data }) {
 
         {!inView && (
           <div
-            sx={{
-              position: 'fixed',
-              bottom: [7],
-              left: 0,
-              zIndex: 3,
-            }}
+            sx={{ position: 'fixed', bottom: 7, left: 0, zIndex: 3 }}
           >
             <MenuToggle />
           </div>
         )}
       </article>
       <div ref={ref}>
-        <InnerBottomMenu data={data.navData.projects} />
+        <FooterMenu data={data.navData.projects} />
       </div>
     </ProjectContextProvider>
+  );
+}
+
+function ProjectHeader({ title, year, launchDate, role, status }) {
+  return (
+    <div
+      sx={{
+        variant: 'superGrid',
+        position: 'fixed',
+        top: 7,
+        zIndex: 2,
+      }}
+    >
+      <header sx={{ gridColumn: ['2/5', '2/5', '2/7'] }}>
+        <h1 sx={{ variant: 'text.pageTitle' }}>{title}</h1>
+        <div sx={{ variant: 'meta' }}>
+          {status === 'in-progress' ? (
+            <span
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'auto 1fr',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <span
+                sx={{
+                  display: 'inline-block',
+                  height: '18px',
+                  width: '18px',
+                  borderRadius: '100%',
+                  bg: 'red',
+                }}
+              />
+              {launchDate}
+            </span>
+          ) : (
+            year
+          )}
+          {` ${role}`}
+        </div>
+      </header>
+    </div>
   );
 }
 

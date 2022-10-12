@@ -1,9 +1,9 @@
-import Img from 'next/image';
 import React from 'react';
+import Img from 'next/image';
 import { useNextSanityImage } from 'next-sanity-image';
 import { sanityConfig } from '@lib/config';
 
-const BG = (props) => {
+export default function BackgroundModule(props) {
   const { asset, alt = '', fit = 'cover' } = props;
   const imageProps = useNextSanityImage(sanityConfig, asset);
   if (!imageProps) return null;
@@ -16,6 +16,4 @@ const BG = (props) => {
       alt={alt}
     />
   );
-};
-
-export default BG;
+}

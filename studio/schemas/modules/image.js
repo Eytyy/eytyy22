@@ -3,23 +3,13 @@ export default {
   title: 'Image',
   name: 'imageModule',
   fields: [
-    {
-      name: 'caption',
-      title: 'Caption',
-      type: 'string',
-    },
-    {
-      name: 'alt',
-      title: 'Alt',
-      type: 'string',
-    },
+    { name: 'caption', title: 'Caption', type: 'string' },
+    { name: 'alt', title: 'Alt', type: 'string' },
     {
       name: 'image',
       title: 'Image',
       type: 'image',
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
     },
     {
       name: 'format',
@@ -34,9 +24,6 @@ export default {
     },
   ],
   preview: {
-    select: {
-      media: 'image',
-      title: 'alt',
-    },
+    select: { media: 'image', title: 'alt' },
   },
 };

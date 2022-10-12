@@ -1,38 +1,22 @@
 /** @jsxImportSource theme-ui */
-
-import Head from 'next/head';
-
 import { getClient } from '@lib/sanity.server';
 import { navQuery } from '@lib/queries';
 
-import MainMenu from '@components/nav/MainMenu';
 import TransitionLayout from '@components/TransitionLayout';
+import SEO from '@components/SEO';
+import HomeMenu from '@components/nav/HomeMenu';
 
 export default function Home({ data }) {
   return (
     <TransitionLayout>
-      <Head>
-        <title>Eytyy</title>
-        <meta
-          name="description"
-          content="Freelance Web Developer, based in Jordan, Amman."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <MainMenu data={data} />
+      <SEO />
+      <HomeMenu data={data} />
     </TransitionLayout>
   );
 }
 
 export async function getStaticProps() {
-  const all = `{
-    ${navQuery}
-  }
-`;
+  const all = `${navQuery}`;
   const data = await getClient().fetch(all);
-  return {
-    props: {
-      data,
-    },
-  };
+  return { props: { data } };
 }

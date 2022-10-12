@@ -3,28 +3,14 @@ export default {
   name: 'project',
   type: 'document',
   groups: [
-    {
-      name: 'header',
-      title: 'Header',
-    },
-    {
-      name: 'main',
-      title: 'Main',
-    },
-    {
-      name: 'meta',
-      title: 'Meta',
-    },
+    { name: 'header', title: 'Header' },
+    { name: 'main', title: 'Main' },
+    { name: 'meta', title: 'Meta' },
+    { name: 'seo', title: 'SEO' },
   ],
   fieldsets: [
-    {
-      name: 'preview',
-      title: 'Preview Media',
-    },
-    {
-      name: 'mainmedia',
-      title: 'Main Media',
-    },
+    { name: 'preview', title: 'Preview Media' },
+    { name: 'mainmedia', title: 'Main Media' },
   ],
   fields: [
     {
@@ -176,6 +162,12 @@ export default {
       },
       group: 'main',
       hidden: ({ parent }) => parent.format === 'link',
+    },
+    {
+      name: 'seo',
+      title: 'SEO',
+      type: 'seoModule',
+      group: 'seo',
     },
   ],
 };

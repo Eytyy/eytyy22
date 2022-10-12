@@ -5,7 +5,7 @@ import Link from 'next/link';
 const CollectionPostsList = ({ posts }) => {
   return posts.map((post, index) => (
     <span key={post._id}>
-      <Link href={`/post/${post.slug}`} passHref>
+      <Link href={`/blog/${post.slug}`} passHref>
         <a sx={{ variant: 'link' }}>
           {`#${index + 1} ${post.title}`}
         </a>
